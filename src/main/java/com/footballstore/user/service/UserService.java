@@ -6,12 +6,14 @@ import com.footballstore.user.model.UserRole;
 import com.footballstore.user.repository.UserRepository;
 import com.footballstore.web.dto.LoginRequest;
 import com.footballstore.web.dto.RegisterRequest;
+import com.footballstore.web.dto.UserEditRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -53,11 +55,26 @@ public class UserService {
         return user;
     }
 
+    public void editUserInfo(UUID userId, UserEditRequest userEditRequest) {
+        User user = getUserById(userId);
+
+        user.setFirstName(userEditRequest.getFirstName());
+        user.setLastName(userEditRequest.getLastName());
+        user.setPhoneNumber(userEditRequest.getPhoneNumber());
+
+        userRepository.save(user);
+
+    }
+
     private User initializeUser(RegisterRequest registerRequest) {
         return User.builder()
                 .email(registerRequest.getEmail())
                 .password(passwordEncoder.encode(registerRequest.getPassword()))
                 .role(UserRole.CUSTOMER)
                 .build();
+    }
+
+    private User getUserById(UUID userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new DomainException("User not found!"));
     }
 }
