@@ -4,6 +4,7 @@ import com.footballstore.exception.DomainException;
 import com.footballstore.user.model.User;
 import com.footballstore.user.model.UserRole;
 import com.footballstore.user.repository.UserRepository;
+import com.footballstore.web.dto.LoginRequest;
 import com.footballstore.web.dto.RegisterRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,22 @@ public class UserService {
         log.info("Successfully registered user with email [%s].".formatted(registerRequest.getEmail()));
 
         return userRepository.save(initializeUser(registerRequest));
+    }
+
+    public User loginUser(LoginRequest loginRequest) {
+        Optional<User> optionalUser = userRepository.findByEmail(loginRequest.getEmail());
+
+        if (optionalUser.isEmpty()) {
+            throw new DomainException("Wrong email address or password!");
+        }
+
+        User user = optionalUser.get();
+
+        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+            throw new DomainException("Wrong email address or password!");
+        }
+
+        return user;
     }
 
     private User initializeUser(RegisterRequest registerRequest) {

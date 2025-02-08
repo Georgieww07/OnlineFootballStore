@@ -31,7 +31,12 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private Category category;
 
+    @Column(nullable = false)
     private String imageUrl;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Brand brand;
 
     @Column(nullable = false)
     private boolean isInStock;
