@@ -52,6 +52,8 @@ public class UserService {
             throw new DomainException("Wrong email address or password!");
         }
 
+        log.info("Successfully logged in user with email [%s].".formatted(user.getEmail()));
+
         return user;
     }
 
