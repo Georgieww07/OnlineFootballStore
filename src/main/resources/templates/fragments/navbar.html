@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .navbar-custom {
+            background-color: #333;
+            padding: 0.5rem 1rem;
+            width: 100%; /* Ensure full width */
+        }
+
+        .btn-custom {
+            text-decoration: none !important;
+            font-size: 20px;
+            font-weight: 700;
+            padding: 14px 28px;
+            border-radius: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.4);
+        }
+        .btn-custom:hover {
+            transform: scale(1.05);
+            box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+
+<div th:fragment="navbar" >
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+        <div class="container-fluid">
+            <!-- Logo aligned to the left -->
+            <a class="btn btn-light btn-custom" href="/">Football Store</a>
+
+            <!-- Right-aligned buttons (Login, Register) -->
+            <div class="d-flex ms-auto">
+                <a href="/login" class="btn btn-outline-light btn-custom me-2">Login</a>
+                <a href="/register" class="btn btn-primary btn-custom">Register</a>
+            </div>
+        </div>
+    </nav>
+</div>
+
+
+
+
+</body>
+</html>
