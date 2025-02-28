@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Football Store - Home</title>
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      background: url('/images/img.png') no-repeat center center;
+      background-size: cover;
+      height: 60vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-align: center;
+    }
+
+    .hero-section h1 {
+      font-size: 4rem;
+      font-weight: 700;
+    }
+
+    .hero-section p {
+      font-size: 1.5rem;
+    }
+
+    .btn-custom {
+      font-size: 1.2rem;
+      font-weight: 700;
+      padding: 12px 30px;
+      border-radius: 8px;
+      transition: 0.3s;
+    }
+
+    .btn-custom:hover {
+      transform: scale(1.05);
+    }
+
+    .category-card img {
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    /* Featured Products Section */
+    .product-card {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: 0.3s;
+    }
+
+    .product-card:hover {
+      transform: scale(1.05);
+    }
+
+    .product-card img {
+      height: 250px;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .product-card .card-body {
+      text-align: center;
+    }
+
+    .product-card .price {
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    .navbar {
+      background: linear-gradient(to right, #DA70D6, #2575fc);
+      border-bottom: 2px solid #ccc;
+    }
+    .navbar-brand {
+      font-weight: bold;
+      font-size: 28px;
+      color: white !important;
+    }
+    .nav-link {
+      color: white !important;
+      font-size: 18px;
+      padding: 10px 15px;
+      border-radius: 5px;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+    .nav-link:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      transform: scale(1.1);
+    }
+    .form-control {
+      border-radius: 30px;
+      padding: 10px 15px;
+      width: 200px;
+      transition: all 0.3s ease;
+    }
+    .form-control:focus {
+      box-shadow: 0px 0px 8px rgba(0, 123, 255, 0.6);
+      border-color: #2575fc;
+    }
+    .btn-outline-light {
+      border-radius: 30px;
+      padding: 8px 15px;
+      transition: all 0.3s ease;
+    }
+    .btn-outline-light:hover {
+      background-color: #2575fc;
+      color: white;
+    }
+    /* Hover effect for the icons */
+    .nav-link i {
+      transition: transform 0.3s ease;
+    }
+    .nav-link:hover i {
+      transform: scale(1.2);
+    }
+  </style>
+</head>
+<body>
+
+<!-- Include Navbar Fragment -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <!-- Logo (Football Store) on the left -->
+    <a class="navbar-brand" href="/" style="font-weight: bold; font-size: 24px;">Football Store</a>
+
+    <!-- Spacer for the navbar content to align on the right -->
+    <div class="d-flex ms-auto align-items-center">
+      <!-- Search Bar (Right side) -->
+      <form action="/search" method="GET" class="d-flex ms-3">
+        <input class="form-control" type="search" name="query" placeholder="Search..." aria-label="Search">
+        <button class="btn btn-outline-light ms-2" type="submit"><i class="fas fa-search"></i></button>
+      </form>
+
+      <!-- Profile Button (Right side) -->
+      <a class="nav-link" href="/profile" style="color: white; font-size: 18px; padding: 0 10px;">
+        <i class="fas fa-user"></i>
+      </a>
+
+      <!-- Shopping Cart Button (Right side) -->
+      <a class="nav-link" href="/cart" style="color: white; font-size: 18px; padding: 0 10px;">
+        <i class="fas fa-shopping-cart"></i>
+      </a>
+
+    </div>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero-section">
+  <div>
+    <h1>Welcome to Football Store</h1>
+    <p>Find the best football boots, jerseys, and more!</p>
+    <a href="/products" class="btn btn-primary btn-custom">Shop Now</a>
+  </div>
+</section>
+
+<!-- Featured Categories Section -->
+<section class="container py-5">
+  <h2 class="text-center mb-5">Shop by Category</h2>
+  <div class="row">
+    <div class="col-md-4 mb-4">
+      <div class="card category-card">
+        <img src="/images/boots.jpg" class="card-img-top" alt="Football Boots">
+        <div class="card-body text-center">
+          <h5 class="card-title">Football Boots</h5>
+          <a href="/products?category=boots" class="btn btn-outline-primary">Browse Boots</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card category-card">
+        <img src="/images/jerseys.jpg" class="card-img-top" alt="Football Jerseys">
+        <div class="card-body text-center">
+          <h5 class="card-title">Football Jerseys</h5>
+          <a href="/products?category=jerseys" class="btn btn-outline-primary">Browse Jerseys</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card category-card">
+        <img src="/images/balls.jpg" class="card-img-top" alt="Football Balls">
+        <div class="card-body text-center">
+          <h5 class="card-title">Football Balls</h5>
+          <a href="/products?category=balls" class="btn btn-outline-primary">Browse Balls</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Products Section -->
+<section class="container py-5">
+  <h2 class="text-center mb-5">Featured Products</h2>
+  <div class="row">
+    <div class="col-md-4 mb-4">
+      <div class="card product-card">
+        <img src="/images/featured-product1.jpg" class="card-img-top" alt="Product 1">
+        <div class="card-body">
+          <h5 class="card-title">Nike Football Boots</h5>
+          <p class="card-text">High performance boots designed for champions.</p>
+          <p class="price">$120.00</p>
+          <a href="/products/1" class="btn btn-primary">View Product</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card product-card">
+        <img src="/images/featured-product2.jpg" class="card-img-top" alt="Product 2">
+        <div class="card-body">
+          <h5 class="card-title">Adidas Football Jersey</h5>
+          <p class="card-text">Comfortable and stylish jersey for your team.</p>
+          <p class="price">$45.00</p>
+          <a href="/products/2" class="btn btn-primary">View Product</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card product-card">
+        <img src="/images/featured-product3.jpg" class="card-img-top" alt="Product 3">
+        <div class="card-body">
+          <h5 class="card-title">Premium Football</h5>
+          <p class="card-text">Durable and high-quality football for all players.</p>
+          <p class="price">$30.00</p>
+          <a href="/products/3" class="btn btn-primary">View Product</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer (Optional) -->
+<th:block th:insert="fragments/footer :: footer"></th:block>
+
+</body>
+</html>
