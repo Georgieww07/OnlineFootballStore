@@ -37,7 +37,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     List<Order> orders = new ArrayList<>();
 
     @OneToOne(mappedBy = "user")

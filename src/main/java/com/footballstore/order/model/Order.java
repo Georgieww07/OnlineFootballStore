@@ -32,6 +32,6 @@ public class Order {
     @Column(nullable = false)
     private BigDecimal totalPrice;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
     private List<OrderItem> items = new ArrayList<>();
 }

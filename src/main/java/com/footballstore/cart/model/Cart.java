@@ -28,6 +28,6 @@ public class Cart {
     @Column(nullable = false)
     private BigDecimal totalPrice;
 
-    @OneToMany(mappedBy = "cart")
+    @OneToMany(mappedBy = "cart", fetch = FetchType.EAGER)
     List<CartItem> items = new ArrayList<>();
 }
