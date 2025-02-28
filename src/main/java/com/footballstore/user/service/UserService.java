@@ -27,16 +27,22 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User registerUser(RegisterRequest registerRequest) {
+    public void registerUser(RegisterRequest registerRequest) {
         Optional<User> optionalUser = userRepository.findByEmail(registerRequest.getEmail());
 
         if (optionalUser.isPresent()) {
             throw new DomainException("User with email [%s] already exists!".formatted(registerRequest.getEmail()));
         }
 
-        log.info("Successfully registered user with email [%s].".formatted(registerRequest.getEmail()));
+        User user = User.builder()
+                .email(registerRequest.getEmail())
+                .password(passwordEncoder.encode(registerRequest.getPassword()))
+                .role(UserRole.CUSTOMER)
+                .build();
 
-        return userRepository.save(initializeUser(registerRequest));
+        userRepository.save(user);
+
+        log.info("Successfully registered user with email [%s].".formatted(registerRequest.getEmail()));
     }
 
     public User loginUser(LoginRequest loginRequest) {
@@ -66,14 +72,6 @@ public class UserService {
 
         userRepository.save(user);
 
-    }
-
-    private User initializeUser(RegisterRequest registerRequest) {
-        return User.builder()
-                .email(registerRequest.getEmail())
-                .password(passwordEncoder.encode(registerRequest.getPassword()))
-                .role(UserRole.CUSTOMER)
-                .build();
     }
 
     private User getUserById(UUID userId) {

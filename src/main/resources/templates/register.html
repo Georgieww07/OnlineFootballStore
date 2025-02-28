@@ -48,23 +48,30 @@
 <div class="container">
     <div class="card bg-light">
         <h2 class="text-center mb-4">Create an Account</h2>
-        <form action="" method="post">
+        <form th:action="@{/register}" th:method="POST" th:object="${registerRequest}">
+            <div th:if="${errorMessage}" class="alert-danger">
+                <p th:text="${errorMessage}"></p>
+            </div>
+
             <!-- Email -->
             <div class="mb-3">
-                <label class="form-label">Email</label>
-                <input type="email" name="email" class="form-control" required placeholder="Enter your email">
+                <label for="username" class="form-label">Email</label>
+                <input type="email" name="email" id="username" class="form-control" required placeholder="Enter your email" th:field="*{email}">
+                <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="alert-danger"></p>
             </div>
 
             <!-- Password -->
             <div class="mb-3 position-relative">
-                <label class="form-label">Password</label>
-                <input type="password" name="password" class="form-control" id="password" required placeholder="Enter your password">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" name="password" th:id="password" class="form-control" id="password" required placeholder="Enter your password" th:field="*{password}">
+                <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="alert-danger"></p>
             </div>
 
             <!-- Confirm Password -->
             <div class="mb-3">
                 <label class="form-label">Confirm Password</label>
-                <input type="password" name="confirmPassword" class="form-control" required placeholder="Confirm your password">
+                <input type="password" name="confirmPassword" class="form-control" required placeholder="Confirm your password" th:field="*{confirmPassword}">
+                <p th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" class="alert-danger"></p>
             </div>
 
             <!-- Register Button -->
@@ -72,7 +79,7 @@
 
             <!-- Login Redirect -->
             <div class="text-center mt-3">
-                <p>Already have an account? <a href="/login">Login here</a></p>
+                <p>Already have an account? <a th:href="@{/login}">Login here</a></p>
             </div>
         </form>
     </div>
