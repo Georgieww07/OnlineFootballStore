@@ -2,11 +2,15 @@ package com.footballstore.web.dto;
 
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserEditRequest {
 
     @Size(max = 30, message = "First name shouldn't contain more than 30 letters.")
