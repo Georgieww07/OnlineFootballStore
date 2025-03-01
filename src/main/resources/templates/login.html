@@ -39,11 +39,38 @@
       transform: scale(1.05);
     }
 
+
+  /*  here*/
+    .navbar-custom {
+      position: absolute;
+      width: 100%;
+      top: 20px;
+      left: 0;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 40px;
+    }
+    .btn-custom {
+      text-decoration: none !important;
+      font-size: 20px;
+      font-weight: 700;
+      padding: 14px 28px;
+      border-radius: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: 0.3s;
+      box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.4);
+    }
+    .btn-custom:hover {
+      transform: scale(1.05);
+      box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.5);
+    }
+
   </style>
 </head>
 <body>
 
-<!-- Navigation -->
+<!-- Navigation bar fragment -->
 <th:block th:insert="fragments/navbar :: navbar"></th:block>
 
 <!-- Login Form -->
