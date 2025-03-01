@@ -128,32 +128,7 @@
 <body>
 
 <!-- Include Navbar Fragment -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-    <!-- Logo (Football Store) on the left -->
-    <a class="navbar-brand" href="/" style="font-weight: bold; font-size: 24px;">Football Store</a>
-
-    <!-- Spacer for the navbar content to align on the right -->
-    <div class="d-flex ms-auto align-items-center">
-      <!-- Search Bar (Right side) -->
-      <form action="/search" method="GET" class="d-flex ms-3">
-        <input class="form-control" type="search" name="query" placeholder="Search..." aria-label="Search">
-        <button class="btn btn-outline-light ms-2" type="submit"><i class="fas fa-search"></i></button>
-      </form>
-
-      <!-- Profile Button (Right side) -->
-      <a class="nav-link" href="/profile" style="color: white; font-size: 18px; padding: 0 10px;">
-        <i class="fas fa-user"></i>
-      </a>
-
-      <!-- Shopping Cart Button (Right side) -->
-      <a class="nav-link" href="/cart" style="color: white; font-size: 18px; padding: 0 10px;">
-        <i class="fas fa-shopping-cart"></i>
-      </a>
-
-    </div>
-  </div>
-</nav>
+<div th:insert="fragments/navbar :: nav-bar"></div>
 
 <!-- Hero Section -->
 <section class="hero-section">

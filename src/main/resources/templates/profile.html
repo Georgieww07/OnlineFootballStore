@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" crossorigin="anonymous">
+    <style>
+        body {
+            background: url('https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Poppins', sans-serif;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .profile-card {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            padding: 50px;
+            width: 500px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.4);
+            color: white;
+        }
+        .profile-card h2 {
+            font-size: 30px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+        .form-control {
+            background: rgba(255, 255, 255, 0.85);
+            border: none;
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 18px;
+        }
+        .btn-custom {
+            border-radius: 25px;
+            padding: 14px;
+            font-size: 20px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        .btn-save {
+            background: #28a745;
+            color: white;
+        }
+        .btn-save:hover {
+            background: #218838;
+        }
+        .btn-back {
+            background: #d9534f;
+            color: white;
+        }
+        .btn-back:hover {
+            background: #c9302c;
+        }
+        .navbar {
+            background: linear-gradient(to right, #DA70D6, #2575fc);
+            border-bottom: 2px solid #ccc;
+        }
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 28px;
+            color: white !important;
+        }
+        .nav-link {
+            color: white !important;
+            font-size: 18px;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+        .nav-link i {
+            transition: transform 0.3s ease;
+        }
+        .nav-link:hover i {
+            transform: scale(1.2);
+        }
+
+
+         /*here*/
+
+
+        .hero-section h1 {
+            font-size: 4rem;
+            font-weight: 700;
+        }
+
+        .hero-section p {
+            font-size: 1.5rem;
+        }
+
+        .btn-custom {
+            font-size: 1.2rem;
+            font-weight: 700;
+            padding: 12px 30px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .btn-custom:hover {
+            transform: scale(1.05);
+        }
+
+        .category-card img {
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .product-card img {
+            height: 250px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .navbar {
+            background: linear-gradient(to right, #DA70D6, #2575fc);
+            border-bottom: 2px solid #ccc;
+        }
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 28px;
+            color: white !important;
+        }
+        .nav-link {
+            color: white !important;
+            font-size: 18px;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+        .form-control {
+            border-radius: 30px;
+            padding: 10px 15px;
+            width: 200px;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus {
+            box-shadow: 0px 0px 8px rgba(0, 123, 255, 0.6);
+            border-color: #2575fc;
+        }
+        .btn-outline-light {
+            border-radius: 30px;
+            padding: 8px 15px;
+            transition: all 0.3s ease;
+        }
+        .btn-outline-light:hover {
+            background-color: #2575fc;
+            color: white;
+        }
+        /* Hover effect for the icons */
+        .nav-link i {
+            transition: transform 0.3s ease;
+        }
+        .nav-link:hover i {
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+
+<div th:insert="fragments/navbar :: nav-bar"></div>
+
+<div class="container">
+    <div class="profile-card">
+        <h2><i class="fas fa-user-circle"></i> My Profile</h2>
+        <form action="/profile/update" method="post">
+            <div class="mb-4">
+                <input type="text" class="form-control" name="firstName"  placeholder="First Name" required>
+            </div>
+            <div class="mb-4">
+                <input type="text" class="form-control" name="lastName"  placeholder="Last Name" required>
+            </div>
+            <div class="mb-4">
+                <input type="email" class="form-control" name="email"  readonly>
+            </div>
+            <div class="mb-4">
+                <input type="text" class="form-control" name="phoneNumber"  placeholder="Phone Number" required>
+            </div>
+            <div class="d-grid gap-3">
+                <button type="submit" class="btn btn-custom btn-save"><i class="fas fa-save"></i> Save</button>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
