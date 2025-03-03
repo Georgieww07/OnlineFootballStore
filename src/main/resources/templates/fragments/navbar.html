@@ -59,7 +59,7 @@
                 </form>
 
                 <!-- Profile Button (Right side) -->
-                <a class="nav-link" href="/profile" style="color: white; font-size: 18px; padding: 0 10px;">
+                <a class="nav-link" th:href="@{'/users/' + ${user.id} + '/profile' }" style="color: white; font-size: 18px; padding: 0 10px;">
                     <i class="fas fa-user"></i>
                 </a>
 

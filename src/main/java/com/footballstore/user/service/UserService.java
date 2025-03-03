@@ -68,13 +68,16 @@ public class UserService {
 
         user.setFirstName(userEditRequest.getFirstName());
         user.setLastName(userEditRequest.getLastName());
+        if (!userEditRequest.getPhoneNumber().isEmpty()) {
+            user.setPhoneNumber("+359" + userEditRequest.getPhoneNumber());
+        }
         user.setPhoneNumber(userEditRequest.getPhoneNumber());
-
         userRepository.save(user);
 
+        log.info("Successfully edited user with email [%s].".formatted(user.getEmail()));
     }
 
-    private User getUserById(UUID userId) {
+    public User getUserById(UUID userId) {
         return userRepository.findById(userId).orElseThrow(() -> new DomainException("User not found!"));
     }
 }
