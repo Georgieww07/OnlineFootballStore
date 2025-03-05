@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Football Store - Home</title>
+  <title>Football Store - Browse Category</title>
   <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
@@ -21,6 +21,19 @@
       align-items: center;
       color: white;
       text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-section:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5); /* Dark overlay */
+      z-index: -1;
     }
 
     .hero-section h1 {
@@ -145,53 +158,18 @@
 <!-- Hero Section -->
 <section class="hero-section">
   <div>
-    <h1>Welcome to Football Store</h1>
-    <p>Find the best football boots, jerseys, and more!</p>
-    <a href="/products" class="btn btn-primary btn-custom">Shop Now</a>
+    <h1>Browse <span >Category Name</span></h1>
+    <p>Explore our amazing collection of <span >categoryName</span> products!</p>
+    <a href="/" class="btn btn-primary btn-custom">Back to Home</a>
   </div>
 </section>
 
-<!-- Featured Categories Section -->
-<section class="container py-5">
-  <h2 class="text-center mb-5">Shop by Category</h2>
-  <div class="row">
-    <div class="col-md-4 mb-4">
-      <div class="card category-card">
-        <img src="/images/boots.jpg" class="card-img-top" alt="Football Boots">
-        <div class="card-body text-center">
-          <h5 class="card-title">Football Boots</h5>
-          <a href="/products?category=boots" class="btn btn-outline-primary">Browse Boots</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4 mb-4">
-      <div class="card category-card">
-        <img src="/images/jerseys.jpg" class="card-img-top" alt="Football Jerseys">
-        <div class="card-body text-center">
-          <h5 class="card-title">Football Jerseys</h5>
-          <a href="/products?category=jerseys" class="btn btn-outline-primary">Browse Jerseys</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4 mb-4">
-      <div class="card category-card">
-        <img src="/images/balls.jpg" class="card-img-top" alt="Football Balls">
-        <div class="card-body text-center">
-          <h5 class="card-title">Football Balls</h5>
-          <a href="/products?category=balls" class="btn btn-outline-primary">Browse Balls</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Featured Products Section -->
 <section class="container py-5">
   <h2 class="text-center mb-5">Featured Products</h2>
   <div class="row">
     <div class="col-md-4 mb-4">
       <div class="card product-card">
-        <img src="/images/featured-product1.jpg" class="card-img-top" alt="Product 1">
+        <img src="/images/img.png" class="card-img-top" alt="Product 1">
         <div class="card-body">
           <h5 class="card-title">Nike Football Boots</h5>
           <p class="card-text">High performance boots designed for champions.</p>
@@ -202,7 +180,7 @@
     </div>
     <div class="col-md-4 mb-4">
       <div class="card product-card">
-        <img src="/images/featured-product2.jpg" class="card-img-top" alt="Product 2">
+        <img src="/images/img.png" class="card-img-top" alt="Product 2">
         <div class="card-body">
           <h5 class="card-title">Adidas Football Jersey</h5>
           <p class="card-text">Comfortable and stylish jersey for your team.</p>
@@ -213,7 +191,31 @@
     </div>
     <div class="col-md-4 mb-4">
       <div class="card product-card">
-        <img src="/images/featured-product3.jpg" class="card-img-top" alt="Product 3">
+        <img src="/images/img.png" class="card-img-top" alt="Product 3">
+        <div class="card-body">
+          <h5 class="card-title">Premium Football</h5>
+          <p class="card-text">Durable and high-quality football for all players.</p>
+          <p class="price">$30.00</p>
+          <a href="/products/3" class="btn btn-primary">View Product</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+      <div class="card product-card">
+        <img src="/images/img.png" class="card-img-top" alt="Product 3">
+        <div class="card-body">
+          <h5 class="card-title">Premium Football</h5>
+          <p class="card-text">Durable and high-quality football for all players.</p>
+          <p class="price">$30.00</p>
+          <a href="/products/3" class="btn btn-primary">View Product</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+      <div class="card product-card">
+        <img src="/images/img.png" class="card-img-top" alt="Product 3">
         <div class="card-body">
           <h5 class="card-title">Premium Football</h5>
           <p class="card-text">Durable and high-quality football for all players.</p>
@@ -225,7 +227,7 @@
   </div>
 </section>
 
-<!-- Footer (Optional) -->
+<!-- Footer -->
 <th:block th:insert="fragments/footer :: footer"></th:block>
 
 </body>
