@@ -201,11 +201,20 @@
         .admin-btn:hover {
             transform: scale(1.1);
         }
+
+        .top-button{
+            margin-bottom: -50px;
+        }
     </style>
 </head>
 <body>
 
 <div th:insert="fragments/navbar :: nav-bar"></div>
+
+<div class="top-button">
+    <a href="/orders" class="btn btn-light  btn-lg btn-block font-weight-bold">My Orders</a>
+</div>
+
 
 <div class="container">
     <div class="profile-card">
