@@ -5,6 +5,7 @@ import com.footballstore.order.model.Order;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -36,6 +37,9 @@ public class User {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private UserRole role;
+
+    @Column(nullable = false)
+    private LocalDateTime createdOn;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     List<Order> orders = new ArrayList<>();
