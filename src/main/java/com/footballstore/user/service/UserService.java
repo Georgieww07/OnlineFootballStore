@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -38,6 +40,7 @@ public class UserService {
                 .email(registerRequest.getEmail())
                 .password(passwordEncoder.encode(registerRequest.getPassword()))
                 .role(UserRole.CUSTOMER)
+                .createdOn(LocalDateTime.now())
                 .build();
 
         userRepository.save(user);
@@ -77,7 +80,27 @@ public class UserService {
         log.info("Successfully edited user with email [%s].".formatted(user.getEmail()));
     }
 
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
     public User getUserById(UUID userId) {
         return userRepository.findById(userId).orElseThrow(() -> new DomainException("User not found!"));
+    }
+
+    public void changeRole(UUID userId) {
+        User user = getUserById(userId);
+
+        if (user.getRole() == UserRole.CUSTOMER) {
+            user.setRole(UserRole.ADMIN);
+        }else {
+            user.setRole(UserRole.CUSTOMER);
+        }
+
+        userRepository.save(user);
+    }
+
+    public void deleteUser(UUID userId) {
+        userRepository.deleteById(userId);
     }
 }

@@ -9,12 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -25,6 +23,25 @@ public class UserController {
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping
+    public ModelAndView getAllUsers() {
+
+        ModelAndView modelAndView = new ModelAndView();
+
+
+        //TODO:Remove these two lines they are for testing
+        User user = userService.getUserById(UUID.fromString("0fe1122a-fa46-4962-8a15-f666c3de8eed"));
+        modelAndView.addObject("user", user);
+
+        List<User> users = userService.getAllUsers();
+
+        modelAndView.addObject("users", users);
+
+        modelAndView.setViewName("users");
+
+        return modelAndView;
     }
 
     @GetMapping("/{id}/profile")
@@ -59,5 +76,21 @@ public class UserController {
         userService.editUserInfo(id, userEditRequest);
 
         return new ModelAndView("redirect:/home");
+    }
+
+    @PutMapping("/{id}/role")
+    public String changeRole(@PathVariable UUID id){
+
+        userService.changeRole(id);
+
+        return "redirect:/users";
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteUser(@PathVariable UUID id){
+
+        userService.deleteUser(id);
+
+        return "redirect:/users";
     }
 }
