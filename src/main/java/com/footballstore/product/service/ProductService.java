@@ -57,7 +57,7 @@ public class ProductService {
         productRepository.deleteById(productId);
     }
 
-    private Product getProductById(UUID productId) {
+    public Product getProductById(UUID productId) {
         return productRepository.findById(productId).orElseThrow(() -> new DomainException("Product not found."));
     }
 }

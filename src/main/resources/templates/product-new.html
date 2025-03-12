@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Create Product - Football Store</title>
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    .container {
+      margin-top: 40px;
+    }
+
+    .card {
+      max-width: 700px;
+      margin: auto;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-label {
+      font-weight: bold;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 12px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border-radius: 8px;
+    }
+
+    .form-control {
+      border-radius: 6px;
+    }
+
+    .toggle-switch {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1rem;
+    }
+
+    .image-preview {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    .image-preview img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 2px solid #ddd;
+    }
+
+
+
+    .navbar {
+      background: linear-gradient(to right, #DA70D6, #2575fc);
+      border-bottom: 2px solid #ccc;
+    }
+    .navbar-brand {
+      font-weight: bold;
+      font-size: 28px;
+      color: white !important;
+    }
+    .nav-link {
+      color: white !important;
+      font-size: 18px;
+      padding: 10px 15px;
+      border-radius: 5px;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+    .nav-link:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      transform: scale(1.1);
+    }
+
+    .btn-outline-light {
+      border-radius: 30px;
+      padding: 8px 15px;
+      transition: all 0.3s ease;
+    }
+    .btn-outline-light:hover {
+      background-color: #2575fc;
+      color: white;
+    }
+    /* Hover effect for the icons */
+    .nav-link i {
+      transition: transform 0.3s ease;
+    }
+    .nav-link:hover i {
+      transform: scale(1.2);
+    }
+
+    .admin-btn {
+      font-size: 16px;
+      padding: 8px 15px;
+      font-weight: bold;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+    }
+
+    .admin-btn:hover {
+      transform: scale(1.1);
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div th:insert="fragments/navbar :: nav-bar"></div>
+
+<div class="container">
+  <div class="card shadow">
+    <h2 class="text-center mb-4">Create New Product</h2>
+
+    <form th:action="@{/products}" th:method="POST" th:object="${productRequest}">
+
+      <!-- Product Name -->
+      <div class="mb-3">
+        <label class="form-label">Product Name</label>
+        <input type="text" class="form-control" required th:field="*{name}">
+        <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="alert-danger"></p>
+      </div>
+
+      <!-- Product Description -->
+      <div class="mb-3">
+        <label class="form-label">Description</label>
+        <textarea class="form-control" rows="4" required th:field="*{description}"></textarea>
+        <p th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="alert-danger"></p>
+      </div>
+
+      <!-- Product Price -->
+      <div class="mb-3">
+        <label class="form-label">Price ($)</label>
+        <input type="number" class="form-control" step="0.01"  required th:field="*{price}">
+        <p th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="alert-danger"></p>
+      </div>
+
+      <!-- Category Dropdown -->
+      <div class="mb-3">
+        <label class="form-label">Category</label>
+        <select class="form-control" required th:field="*{category}">
+          <option th:each="category : ${T(com.footballstore.product.model.Category).values()}" th:value="${category}" th:text="${#strings.capitalize(#strings.toLowerCase(category))}">Select Category</option>
+        </select>
+      </div>
+
+      <!-- Brand Dropdown -->
+      <div class="mb-3">
+        <label class="form-label">Brand</label>
+        <select class="form-control"  th:field="*{brand}">
+          <option th:each="brand : ${T(com.footballstore.product.model.Brand).values()}" th:value="${brand}" th:text="${#strings.capitalize(#strings.toLowerCase(brand))}">Select Brand</option>
+        </select>
+      </div>
+
+      <!-- Image URL -->
+      <div class="mb-3">
+        <label class="form-label">Image URL</label>
+        <input type="text" class="form-control"  id="imageUrlInput" required th:field="*{imageUrl}">
+        <p th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}" class="alert-danger"></p>
+        <div class="image-preview">
+          <img id="imagePreview" src="" alt="Image Preview">
+        </div>
+      </div>
+
+      <!-- In Stock Toggle -->
+      <div class="mb-3 form-check toggle-switch">
+        <!-- Hidden input ensures a value is always sent -->
+        <input type="hidden" name="isInStock" value="false">
+
+        <input class="form-check-input" type="checkbox" th:field="*{inStock}" id="inStockCheckbox">
+        <label class="form-check-label" for="inStockCheckbox">In Stock</label>
+      </div>
+
+
+      <!-- Submit Button -->
+      <button type="submit" class="btn btn-primary btn-submit">Create Product</button>
+    </form>
+  </div>
+</div>
+
+<!-- Footer -->
+<th:block th:insert="fragments/footer :: footer"></th:block>
+
+<script>
+  // Image Preview Feature
+  document.getElementById('imageUrlInput').addEventListener('input', function () {
+    const imageUrl = this.value;
+    document.getElementById('imagePreview').src = imageUrl || '';
+  });
+</script>
+
+</body>
+</html>
