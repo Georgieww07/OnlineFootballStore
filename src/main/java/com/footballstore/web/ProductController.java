@@ -1,5 +1,6 @@
 package com.footballstore.web;
 
+import com.footballstore.cart.service.CartService;
 import com.footballstore.product.model.Product;
 import com.footballstore.product.service.ProductService;
 import com.footballstore.user.model.User;
@@ -21,11 +22,13 @@ import java.util.UUID;
 public class ProductController {
     private final ProductService productService;
     private final UserService userService;
+    private final CartService cartService;
 
     @Autowired
-    public ProductController(ProductService productService, UserService userService) {
+    public ProductController(ProductService productService, UserService userService, CartService cartService) {
         this.productService = productService;
         this.userService = userService;
+        this.cartService = cartService;
     }
 
     @GetMapping
@@ -162,8 +165,28 @@ public class ProductController {
         return new ModelAndView("redirect:/products/admin");
     }
 
+    @GetMapping("/browse")
+    public ModelAndView getProductsByCategory(@RequestParam(name = "category") String category){
+        ModelAndView modelAndView = new ModelAndView();
+
+        //TODO: remove these two lines they are for testing
+        User user = userService.getUserById(UUID.fromString("0fe1122a-fa46-4962-8a15-f666c3de8eed"));
+        modelAndView.addObject("user", user);
+
+
+        List<Product> productsByCategory = productService.getProductsByCategory(category);
+
+        modelAndView.addObject("productsByCategory", productsByCategory);
+        modelAndView.addObject("category", category);
+
+        modelAndView.setViewName("browse-category");
+
+        return modelAndView;
+    }
+
     @DeleteMapping("/{id}")
     public String deleteProduct(@PathVariable UUID id){
+        cartService.deleteCartItem(id);
         productService.deleteProduct(id);
 
         return "redirect:/products/admin";

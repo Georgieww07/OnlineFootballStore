@@ -1,10 +1,13 @@
 package com.footballstore.product.service;
 
 import com.footballstore.exception.DomainException;
+import com.footballstore.product.model.Category;
 import com.footballstore.product.model.Product;
 import com.footballstore.product.repository.ProductRepository;
 import com.footballstore.web.dto.ProductRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,6 +40,12 @@ public class ProductService {
         return productRepository.findAll();
     }
 
+    public List<Product> getFeaturedProducts() {
+        Pageable limit = PageRequest.of(0, 3); // Fetch only 3 products
+        return productRepository.findRandomInStockProducts(limit);
+    }
+
+
 
     public void updateProduct(UUID productId, ProductRequest productRequest) {
         Product product = getProductById(productId);
@@ -59,5 +68,9 @@ public class ProductService {
 
     public Product getProductById(UUID productId) {
         return productRepository.findById(productId).orElseThrow(() -> new DomainException("Product not found."));
+    }
+
+    public List<Product> getProductsByCategory(String category) {
+        return productRepository.findByCategory(Category.valueOf(category));
     }
 }
