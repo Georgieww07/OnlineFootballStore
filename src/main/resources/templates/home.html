@@ -21,6 +21,19 @@
       align-items: center;
       color: white;
       text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-section:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5); /* Dark overlay */
+      z-index: -1;
     }
 
     .hero-section h1 {
@@ -153,32 +166,32 @@
 
 <!-- Featured Categories Section -->
 <section class="container py-5">
-  <h2 class="text-center mb-5">Shop by Category</h2>
+  <h2 class="text-center mb-5 font-weight-bold">Shop by Category</h2>
   <div class="row">
     <div class="col-md-4 mb-4">
       <div class="card category-card">
-        <img src="/images/boots.jpg" class="card-img-top" alt="Football Boots">
+        <img th:src="${'https://brand.assets.adidas.com/image/upload/f_auto,q_auto,fl_lossy/Predator_28f40307d9.jpg'}" class="card-img-top" alt="Football Boots">
         <div class="card-body text-center">
           <h5 class="card-title">Football Boots</h5>
-          <a href="/products?category=boots" class="btn btn-outline-primary">Browse Boots</a>
+          <a th:href="@{'/products/browse?category=BOOTS'}" class="btn btn-outline-primary">Browse Boots</a>
         </div>
       </div>
     </div>
     <div class="col-md-4 mb-4">
       <div class="card category-card">
-        <img src="/images/jerseys.jpg" class="card-img-top" alt="Football Jerseys">
+        <img th:src="${'https://i.pinimg.com/736x/a0/cf/a4/a0cfa4366b674708ef7ecbc75d55f30f.jpg'}" class="card-img-top" alt="Football Jerseys">
         <div class="card-body text-center">
           <h5 class="card-title">Football Jerseys</h5>
-          <a href="/products?category=jerseys" class="btn btn-outline-primary">Browse Jerseys</a>
+          <a th:href="@{'/products/browse?category=JERSEYS'}" class="btn btn-outline-primary">Browse Jerseys</a>
         </div>
       </div>
     </div>
     <div class="col-md-4 mb-4">
       <div class="card category-card">
-        <img src="/images/balls.jpg" class="card-img-top" alt="Football Balls">
+        <img th:src="${'https://preview.thenewsmarket.com/Previews/ADID/StillAssets/1920x1080/675315.jpg'}" class="card-img-top" alt="Football Balls">
         <div class="card-body text-center">
           <h5 class="card-title">Football Balls</h5>
-          <a href="/products?category=balls" class="btn btn-outline-primary">Browse Balls</a>
+          <a th:href="@{'/products/browse?category=BALLS'}" class="btn btn-outline-primary">Browse Balls</a>
         </div>
       </div>
     </div>
@@ -187,38 +200,39 @@
 
 <!-- Featured Products Section -->
 <section class="container py-5">
-  <h2 class="text-center mb-5">Featured Products</h2>
-  <div class="row">
+  <h2 class="text-center mb-5 font-weight-bold">Featured Products</h2>
+  <div class="row" th:if="${featuredProducts != null and #lists.size(featuredProducts) == 3}"
+  >
     <div class="col-md-4 mb-4">
       <div class="card product-card">
-        <img src="/images/featured-product1.jpg" class="card-img-top" alt="Product 1">
+        <img th:src="${featuredProducts[0].imageUrl}" class="card-img-top" alt="Product 1">
         <div class="card-body">
-          <h5 class="card-title">Nike Football Boots</h5>
-          <p class="card-text">High performance boots designed for champions.</p>
-          <p class="price">$120.00</p>
-          <a href="/products/1" class="btn btn-primary">View Product</a>
+          <h5 class="card-title" th:text="${featuredProducts[0].name}">Nike Football Boots</h5>
+          <p class="card-text" th:text="${featuredProducts[0].description}">High performance boots designed for champions.</p>
+          <p class="price"><span th:text="${featuredProducts[0].price}"> </span>$</p>
+          <a th:href="@{'/products/' + ${featuredProducts[0].id}}" class="btn btn-primary">View Product</a>
         </div>
       </div>
     </div>
     <div class="col-md-4 mb-4">
       <div class="card product-card">
-        <img src="/images/featured-product2.jpg" class="card-img-top" alt="Product 2">
+        <img th:src="${featuredProducts[1].imageUrl}" class="card-img-top" alt="Product 2">
         <div class="card-body">
-          <h5 class="card-title">Adidas Football Jersey</h5>
-          <p class="card-text">Comfortable and stylish jersey for your team.</p>
-          <p class="price">$45.00</p>
-          <a href="/products/2" class="btn btn-primary">View Product</a>
+          <h5 class="card-title" th:text="${featuredProducts[1].name}">Adidas Football Jersey</h5>
+          <p class="card-text" th:text="${featuredProducts[1].description}">Comfortable and stylish jersey for your team.</p>
+          <p class="price"><span th:text="${featuredProducts[1].price}"> </span>$</p>
+          <a th:href="@{'/products/' + ${featuredProducts[1].id}}" class="btn btn-primary">View Product</a>
         </div>
       </div>
     </div>
     <div class="col-md-4 mb-4">
       <div class="card product-card">
-        <img src="/images/featured-product3.jpg" class="card-img-top" alt="Product 3">
+        <img th:src="${featuredProducts[2].imageUrl}" class="card-img-top" alt="Product 3">
         <div class="card-body">
-          <h5 class="card-title">Premium Football</h5>
-          <p class="card-text">Durable and high-quality football for all players.</p>
-          <p class="price">$30.00</p>
-          <a href="/products/3" class="btn btn-primary">View Product</a>
+          <h5 class="card-title" th:text="${featuredProducts[2].name}">Premium Football</h5>
+          <p class="card-text" th:text="${featuredProducts[2].description}">Durable and high-quality football for all players.</p>
+          <p class="price"><span th:text="${featuredProducts[2].price}"> </span>$</p>
+          <a th:href="@{'/products/' + ${featuredProducts[2].id}}" class="btn btn-primary">View Product</a>
         </div>
       </div>
     </div>

@@ -1,5 +1,7 @@
 package com.footballstore.web;
 
+import com.footballstore.product.model.Product;
+import com.footballstore.product.service.ProductService;
 import com.footballstore.user.model.User;
 import com.footballstore.user.service.UserService;
 import com.footballstore.web.dto.RegisterRequest;
@@ -11,15 +13,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
 import java.util.UUID;
 
 @Controller
 public class IndexController {
     private final UserService userService;
+    private final ProductService productService;
 
     @Autowired
-    public IndexController(UserService userService) {
+    public IndexController(UserService userService, ProductService productService) {
         this.userService = userService;
+        this.productService = productService;
     }
 
     @GetMapping("/")
@@ -63,15 +68,18 @@ public class IndexController {
 
     @GetMapping("/home")
     public ModelAndView getHomePage(){
-        User user = userService.getUserById(UUID.fromString("487ef20b-bcc8-497b-a1fa-35f5ec610995"));
+        //TODO:Remove these two lines they are for testing
+        User user = userService.getUserById(UUID.fromString("0fe1122a-fa46-4962-8a15-f666c3de8eed"));
+
+        List<Product> featuredProducts = productService.getFeaturedProducts();
 
         ModelAndView modelAndView = new ModelAndView();
 
         modelAndView.addObject("user", user);
+        modelAndView.addObject("featuredProducts", featuredProducts);
 
         modelAndView.setViewName("home");
 
         return modelAndView;
     }
-
 }
