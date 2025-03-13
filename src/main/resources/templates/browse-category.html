@@ -158,69 +158,23 @@
 <!-- Hero Section -->
 <section class="hero-section">
   <div>
-    <h1>Browse <span >Category Name</span></h1>
-    <p>Explore our amazing collection of <span >categoryName</span> products!</p>
-    <a href="/" class="btn btn-primary btn-custom">Back to Home</a>
+    <h1>Browse <span th:text="${#strings.capitalize(#strings.toLowerCase(category))}">Category Name</span></h1>
+    <p>Explore our amazing collection of top-quality football products!</p>
+    <a th:href="@{/home}" class="btn btn-primary btn-custom">Back to Home</a>
   </div>
 </section>
 
 <section class="container py-5">
-  <h2 class="text-center mb-5">Featured Products</h2>
+  <h2 class="text-center mb-5 font-weight-bold">Goods matching your search:</h2>
   <div class="row">
-    <div class="col-md-4 mb-4">
+    <div th:each="product : ${productsByCategory}" class="col-md-4 mb-4">
       <div class="card product-card">
-        <img src="/images/img.png" class="card-img-top" alt="Product 1">
+        <img th:src="${product.imageUrl}" class="card-img-top" alt="Product 1">
         <div class="card-body">
-          <h5 class="card-title">Nike Football Boots</h5>
-          <p class="card-text">High performance boots designed for champions.</p>
-          <p class="price">$120.00</p>
-          <a href="/products/1" class="btn btn-primary">View Product</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4 mb-4">
-      <div class="card product-card">
-        <img src="/images/img.png" class="card-img-top" alt="Product 2">
-        <div class="card-body">
-          <h5 class="card-title">Adidas Football Jersey</h5>
-          <p class="card-text">Comfortable and stylish jersey for your team.</p>
-          <p class="price">$45.00</p>
-          <a href="/products/2" class="btn btn-primary">View Product</a>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4 mb-4">
-      <div class="card product-card">
-        <img src="/images/img.png" class="card-img-top" alt="Product 3">
-        <div class="card-body">
-          <h5 class="card-title">Premium Football</h5>
-          <p class="card-text">Durable and high-quality football for all players.</p>
-          <p class="price">$30.00</p>
-          <a href="/products/3" class="btn btn-primary">View Product</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-4 mb-4">
-      <div class="card product-card">
-        <img src="/images/img.png" class="card-img-top" alt="Product 3">
-        <div class="card-body">
-          <h5 class="card-title">Premium Football</h5>
-          <p class="card-text">Durable and high-quality football for all players.</p>
-          <p class="price">$30.00</p>
-          <a href="/products/3" class="btn btn-primary">View Product</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-4 mb-4">
-      <div class="card product-card">
-        <img src="/images/img.png" class="card-img-top" alt="Product 3">
-        <div class="card-body">
-          <h5 class="card-title">Premium Football</h5>
-          <p class="card-text">Durable and high-quality football for all players.</p>
-          <p class="price">$30.00</p>
-          <a href="/products/3" class="btn btn-primary">View Product</a>
+          <h5 class="card-title" th:text="${product.name}">Nike Football Boots</h5>
+          <p class="card-text" th:text="${product.description}">High performance boots designed for champions.</p>
+          <p class="price"><span th:text="${product.price}"></span>$</p>
+          <a th:href="@{'/products/' + ${product.id}}" class="btn btn-primary">View Product</a>
         </div>
       </div>
     </div>

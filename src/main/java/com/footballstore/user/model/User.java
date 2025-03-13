@@ -44,7 +44,7 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     List<Order> orders = new ArrayList<>();
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
     private Cart cart;
 
 }

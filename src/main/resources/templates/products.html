@@ -125,6 +125,40 @@
             transform: scale(1.1);
         }
 
+        /* Hero Section */
+        .hero-section {
+            background: url('/images/img.png') no-repeat center center;
+            background-size: cover;
+            height: 60vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-section:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Dark overlay */
+            z-index: -1;
+        }
+
+        .hero-section h1 {
+            font-size: 4rem;
+            font-weight: 700;
+        }
+
+        .hero-section p {
+            font-size: 1.5rem;
+        }
+
     </style>
 </head>
 <body>
@@ -132,9 +166,18 @@
 <!-- Include Navbar Fragment -->
 <div th:insert="fragments/navbar :: nav-bar"></div>
 
+<!-- Hero Section -->
+<section class="hero-section">
+    <div>
+        <h1>Check out our premium football goods</h1>
+        <p>Explore our amazing collection of top-quality football products!</p>
+        <a th:href="@{/home}" class="btn btn-primary btn-custom">Back to Home</a>
+    </div>
+</section>
+
 
 <section class="container py-5">
-    <h2 class="text-center mb-5 font-weight-bold">Products information:</h2>
+    <h2 class="text-center mb-5 font-weight-bold">Our Football Collection:</h2>
     <div class="row">
         <div th:each="product : ${products}" class="col-md-4 mb-4">
             <div class="card product-card">

@@ -22,7 +22,7 @@
 
     .product-image {
       /*width was 100%, change it if necessary*/
-      width: 60%;
+      width: 100%;
       border-radius: 10px;
     }
 
@@ -143,7 +143,16 @@
       </p>
 
       <!-- Add to Cart Button -->
-      <a href="#" class="btn btn-add-cart"><i class="fas fa-shopping-cart"></i> Add to Cart</a>
+<!--      <a href="#" class="btn btn-add-cart"><i class="fas fa-shopping-cart"></i> Add to Cart</a>-->
+
+
+      <div th:if="${product.isInStock()}">
+        <form th:action="@{/cart/add(productId=${product.id})}" th:method="POST">
+          <button class="btn btn-add-cart"><i class="fas fa-shopping-cart"></i>Add to cart</button>
+        </form>
+      </div>
+
+
     </div>
   </div>
 </div>
