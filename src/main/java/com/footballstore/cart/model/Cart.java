@@ -25,9 +25,6 @@ public class Cart {
     @OneToOne
     private User user;
 
-    @Column(nullable = false)
-    private BigDecimal totalPrice;
-
     @OneToMany(mappedBy = "cart", fetch = FetchType.EAGER)
     List<CartItem> items = new ArrayList<>();
 }

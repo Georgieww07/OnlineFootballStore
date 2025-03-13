@@ -131,65 +131,22 @@
 
 <div class="cart-container">
     <h2 class="text-center">Your Shopping Cart</h2>
-    <div  class="cart-item">
-<!--        th:each="item : ${cartItems}"-->
-        <img src="/images/img.png" alt="Product Image">
-<!--        th:src="${item.product.imageUrl}"-->
+    <div th:each="item : ${cartItems}"  class="cart-item">
+        <img th:src="${item.product.imageUrl}" alt="Product Image">
         <div class="cart-item-details">
-            <h5 >Product name</h5>
-<!--            th:text="${item.product.name}"-->
-            <p >Product description</p>
-<!--            th:text="${item.product.description}"-->
-            <p class="price">$<span >Product price</span></p>
-<!--            th:text="${item.product.price}"-->
-
-            <p>Brand:<span ></span></p>
-<!--            th:text="${product.brand}"-->
+            <h5 th:text="${item.product.name}">Product name</h5>
+            <p th:text="${item.product.description}" >Product description</p>
+            <p>Brand: <span th:text="${#strings.capitalize(#strings.toLowerCase(item.product.brand))}" ></span></p>
+            <p>Quantity: <span th:text="${item.quantity}"></span></p>
+            <p class="price font-weight-bold">Price: $<span th:text="${item.product.price}"></span></p>
         </div>
-        <button class="btn btn-remove" >Remove</button>
-<!--        th:onclick="|window.location.href='/cart/remove/' + ${item.product.id}|"-->
+        <form th:action="@{'/cart/' + ${item.product.id}}" th:method="DELETE">
+            <button class="btn btn-remove">Remove</button>
+        </form>
     </div>
 
-    <div  class="cart-item">
-        <!--        th:each="item : ${cartItems}"-->
-        <img src="/images/img.png" alt="Product Image">
-        <!--        th:src="${item.product.imageUrl}"-->
-        <div class="cart-item-details">
-            <h5 >Product name</h5>
-            <!--            th:text="${item.product.name}"-->
-            <p >Product description</p>
-            <!--            th:text="${item.product.description}"-->
-            <p class="price">$<span >Product price</span></p>
-            <!--            th:text="${item.product.price}"-->
+    <p class="total-price">Total: $<span th:text="${cartTotal}"></span></p>
 
-            <p>Brand:<span ></span></p>
-            <!--            th:text="${product.brand}"-->
-        </div>
-        <button class="btn btn-remove" >Remove</button>
-        <!--        th:onclick="|window.location.href='/cart/remove/' + ${item.product.id}|"-->
-    </div>
-
-    <div  class="cart-item">
-        <!--        th:each="item : ${cartItems}"-->
-        <img src="/images/img.png" alt="Product Image">
-        <!--        th:src="${item.product.imageUrl}"-->
-        <div class="cart-item-details">
-            <h5 >Product name</h5>
-            <!--            th:text="${item.product.name}"-->
-            <p >Product description</p>
-            <!--            th:text="${item.product.description}"-->
-            <p class="price">$<span >Product price</span></p>
-            <!--            th:text="${item.product.price}"-->
-
-            <p>Brand:<span ></span></p>
-            <!--            th:text="${product.brand}"-->
-        </div>
-        <button class="btn btn-remove" >Remove</button>
-        <!--        th:onclick="|window.location.href='/cart/remove/' + ${item.product.id}|"-->
-    </div>
-
-    <p class="total-price">Total: $<span >Total price $</span></p>
-<!--    th:text="${totalPrice}"-->
     <button class="btn btn-place-order" >Place Order</button>
 <!--    onclick="window.location.href='/order/place'"-->
 </div>
