@@ -4,6 +4,7 @@ import com.footballstore.cart.model.Cart;
 import com.footballstore.cart.repository.CartRepository;
 import com.footballstore.cartitem.model.CartItem;
 import com.footballstore.cartitem.repository.CartItemRepository;
+import com.footballstore.exception.DomainException;
 import com.footballstore.product.model.Product;
 import com.footballstore.product.service.ProductService;
 import com.footballstore.user.model.User;
@@ -94,5 +95,21 @@ public class CartService {
                 .build();
 
         return cartRepository.save(cart);
+    }
+
+    public Cart getCartByUserId(UUID userId) {
+        return cartRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("Cart with user [%s] not found!".formatted(userId)));
+    }
+
+    @Transactional
+    public void clearCart(UUID cartId) {
+        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new DomainException("Cart with cart id [%s] not found!".formatted(cartId)));
+
+        cartItemRepository.deleteAll(cart.getItems());
+        cart.getItems().clear();
+
+        cartRepository.save(cart);
+
+
     }
 }

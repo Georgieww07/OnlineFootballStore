@@ -147,8 +147,12 @@
 
     <p class="total-price">Total: $<span th:text="${cartTotal}"></span></p>
 
-    <button class="btn btn-place-order" >Place Order</button>
+<!--    <button class="btn btn-place-order" >Place Order</button>-->
 <!--    onclick="window.location.href='/order/place'"-->
+
+    <form th:action="@{/orders}" th:method="POST">
+        <button class="btn btn-place-order">Place Order</button>
+    </form>
 </div>
 
 <th:block th:insert="fragments/footer :: footer"></th:block>

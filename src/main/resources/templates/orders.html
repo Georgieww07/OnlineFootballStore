@@ -158,24 +158,32 @@
                 <th>Actions</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody th:each="order : ${orders}">
             <!-- Sample Order 1 -->
             <tr>
-                <td>123e4567-e89b-12d3-a456-426614174001</td>
-                <td>john.doe@example.com</td>
-                <td>10 Mar 2025 14:30</td>
-                <td>$120.50</td>
+                <td th:text="${order.id}">123e4567-e89b-12d3-a456-426614174001</td>
+                <td th:text="${order.user.email}">john.doe@example.com</td>
+                <td th:text="${#temporals.format(order.createdOn, 'dd MMM YYYY HH:mm')}">10 Mar 2025 14:30</td>
+                <td><span th:text="${order.totalPrice}"></span>$</td>
                 <td>
-                    <button class="btn btn-action btn-details" type="button" data-bs-toggle="collapse" data-bs-target="#items-1">
+<!--                    <button class="btn btn-action btn-details" type="button" data-bs-toggle="collapse" data-bs-target="#items-1">-->
+<!--                        View Details <i class="fas fa-chevron-down"></i>-->
+<!--                    </button>-->
+                    <button class="btn btn-action btn-details" type="button"
+                            data-bs-toggle="collapse"
+                            th:attr="data-bs-target='#items-' + ${order.id}">
                         View Details <i class="fas fa-chevron-down"></i>
                     </button>
+
                 </td>
             </tr>
 
             <tr>
                 <td colspan="5" class="p-0">
-                    <div class="collapse order-items" id="items-1">
-                        <h5 class="text-center mt-2"><i class="fas fa-shopping-cart"></i> Order Items</h5>
+<!--                    <div class="collapse order-items" id="items-1">-->
+                    <div class="collapse order-items" th:id="'items-' + ${order.id}">
+
+                    <h5 class="text-center mt-2"><i class="fas fa-shopping-cart"></i> Order Items</h5>
                         <table class="table">
                             <thead>
                             <tr>
@@ -186,73 +194,22 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>Smartphone</td>
-                                <td>Electronics</td>
-                                <td>Samsung</td>
-                                <td>$700</td>
+                            <tr th:each="item : ${order.items}">
+                                <td th:text="${item.product.name}">Smartphone</td>
+                                <td th:text="${item.product.category}">Electronics</td>
+                                <td th:text="${item.product.brand}">Samsung</td>
+                                <td><span th:text="${item.product.price}"></span>$</td>
                             </tr>
-                            <tr>
-                                <td>Headphones</td>
-                                <td>Accessories</td>
-                                <td>Sony</td>
-                                <td>$120.50</td>
-                            </tr>
+
                             </tbody>
                         </table>
                     </div>
                 </td>
             </tr>
-
-            <!-- Sample Order 2 -->
-            <tr>
-                <td>987e6543-e21b-45d3-b789-526614174002</td>
-                <td>jane.smith@example.com</td>
-                <td>12 Mar 2025 16:45</td>
-                <td>$250.00</td>
-                <td>
-                    <button class="btn btn-action btn-details" type="button" data-bs-toggle="collapse" data-bs-target="#items-2">
-                        View Details <i class="fas fa-chevron-down"></i>
-                    </button>
-                </td>
-            </tr>
-
-            <tr>
-                <td colspan="5" class="p-0">
-                    <div class="collapse order-items" id="items-2">
-                        <h5 class="text-center mt-2"><i class="fas fa-shopping-cart"></i> Order Items</h5>
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th>Product</th>
-                                <th>Category</th>
-                                <th>Brand</th>
-                                <th>Price</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td>Laptop</td>
-                                <td>Computers</td>
-                                <td>Dell</td>
-                                <td>$1000</td>
-                            </tr>
-                            <tr>
-                                <td>Mouse</td>
-                                <td>Accessories</td>
-                                <td>Logitech</td>
-                                <td>$50.00</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </td>
-            </tr>
-
             </tbody>
         </table>
 
-        <a href="#" class="btn btn-back"><i class="fas fa-arrow-left"></i> Back to Profile</a>
+        <a th:href="@{'/users/' + ${user.id} + '/profile'}" class="btn btn-back"><i class="fas fa-arrow-left"></i> Back to Profile</a>
     </div>
 </div>
 
