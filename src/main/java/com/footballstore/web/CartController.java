@@ -32,6 +32,8 @@ public class CartController {
 
         ModelAndView modelAndView = new ModelAndView();
 
+
+        //TODO: check for potential errors
         List<CartItem> cartItems = cartService.getCartItems();
 
         Cart cart = user.getCart();

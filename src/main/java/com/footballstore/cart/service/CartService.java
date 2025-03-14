@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -67,14 +68,20 @@ public class CartService {
             cart.getItems().add(cartItem);
         }
 
+        cart.setLastUpdated(LocalDateTime.now());
         cartRepository.save(cart);
     }
 
+    @Transactional
     public void deleteCartItem(UUID productId) {
         CartItem byProductId = cartItemRepository.findByProductId(productId);
 
         if (byProductId != null) {
             cartItemRepository.delete(byProductId);
+
+            Cart cart = byProductId.getCart();
+            cart.setLastUpdated(LocalDateTime.now());
+            cartRepository.save(cart);
         }
     }
 
@@ -92,6 +99,7 @@ public class CartService {
         Cart cart = Cart.builder()
                 .user(user)
                 .items(new ArrayList<CartItem>())
+                .lastUpdated(LocalDateTime.now())
                 .build();
 
         return cartRepository.save(cart);
@@ -108,8 +116,18 @@ public class CartService {
         cartItemRepository.deleteAll(cart.getItems());
         cart.getItems().clear();
 
-        cartRepository.save(cart);
+        cart.setLastUpdated(LocalDateTime.now());
 
+        cartRepository.save(cart);
+    }
+
+    public void cleanUpOldCarts() {
+        LocalDateTime expirationTime = LocalDateTime.now().minusMinutes(1);
+
+        List<Cart> oldCarts = cartRepository.findByLastUpdatedBefore(expirationTime);
+
+        cartRepository.deleteAll(oldCarts);
+        System.out.println(oldCarts.size() + " abandoned carts deleted.");
 
     }
 }
