@@ -3,9 +3,11 @@ package com.footballstore.web;
 import com.footballstore.cart.model.Cart;
 import com.footballstore.cart.service.CartService;
 import com.footballstore.cartitem.model.CartItem;
+import com.footballstore.security.AuthenticationMetadata;
 import com.footballstore.user.model.User;
 import com.footballstore.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,19 +29,20 @@ public class CartController {
     }
 
     @GetMapping
-    public ModelAndView getCart(){
-        User user = userService.getUserById(UUID.fromString("0fe1122a-fa46-4962-8a15-f666c3de8eed"));
-
-        ModelAndView modelAndView = new ModelAndView();
-
+    public ModelAndView getCart(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+        User user = userService.getUserById(authenticationMetadata.getUserId());
 
         //TODO: check for potential errors
-        List<CartItem> cartItems = cartService.getCartItems();
+//        List<CartItem> cartItems = cartService.getCartItems();
 
         Cart cart = user.getCart();
         if (user.getCart() == null){
             cart = cartService.initCart(user);
         }
+
+        List<CartItem> cartItems = cart.getItems();
+
+        ModelAndView modelAndView = new ModelAndView();
 
         BigDecimal cartTotal = cartService.getCartTotal(cart);
         modelAndView.addObject("cartTotal", cartTotal);
@@ -54,11 +57,9 @@ public class CartController {
     }
 
     @PostMapping("/add")
-    public String addToCart(@RequestParam("productId") UUID productId) {
+    public String addToCart(@RequestParam("productId") UUID productId, @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
 
-
-        //TODO: remove these two lines they are for testing
-        User user = userService.getUserById(UUID.fromString("0fe1122a-fa46-4962-8a15-f666c3de8eed"));
+        User user = userService.getUserById(authenticationMetadata.getUserId());
 
         cartService.addToCart(user.getId(), productId);
 

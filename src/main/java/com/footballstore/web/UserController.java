@@ -1,11 +1,14 @@
 package com.footballstore.web;
 
+import com.footballstore.security.AuthenticationMetadata;
 import com.footballstore.user.model.User;
 import com.footballstore.user.service.UserService;
 import com.footballstore.web.dto.UserEditRequest;
 import com.footballstore.web.mapper.DtoMapper;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.validation.BindingResult;
@@ -26,13 +29,12 @@ public class UserController {
     }
 
     @GetMapping
-    public ModelAndView getAllUsers() {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView getAllUsers(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
 
         ModelAndView modelAndView = new ModelAndView();
 
-
-        //TODO:Remove these two lines they are for testing
-        User user = userService.getUserById(UUID.fromString("0fe1122a-fa46-4962-8a15-f666c3de8eed"));
+        User user = userService.getUserById(authenticationMetadata.getUserId());
         modelAndView.addObject("user", user);
 
         List<User> users = userService.getAllUsers();

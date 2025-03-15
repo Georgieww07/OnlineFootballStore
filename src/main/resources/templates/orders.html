@@ -184,7 +184,7 @@
                     <div class="collapse order-items" th:id="'items-' + ${order.id}">
 
                     <h5 class="text-center mt-2"><i class="fas fa-shopping-cart"></i> Order Items</h5>
-                        <table class="table">
+                        <table class="table" th:unless="${#lists.isEmpty(order.items)}">
                             <thead>
                             <tr>
                                 <th>Product</th>
@@ -195,14 +195,35 @@
                             </thead>
                             <tbody>
                             <tr th:each="item : ${order.items}">
-                                <td th:text="${item.product.name}">Smartphone</td>
-                                <td th:text="${item.product.category}">Electronics</td>
-                                <td th:text="${item.product.brand}">Samsung</td>
+                                <td th:text="${item.product.name}"></td>
+                                <td th:text="${item.product.category}"></td>
+                                <td th:text="${item.product.brand}"></td>
                                 <td><span th:text="${item.product.price}"></span>$</td>
                             </tr>
 
                             </tbody>
                         </table>
+
+                        <!--            THIS TABLE WILL BE DISPLAYED WHEN THERE ARE NO ORDER ITEMS-->
+                        <table class="table" th:if="${#lists.isEmpty(order.items)}">
+                            <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Category</th>
+                                <th>Brand</th>
+                                <th>Price</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
                     </div>
                 </td>
             </tr>

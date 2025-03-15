@@ -1,14 +1,17 @@
 package com.footballstore.user.service;
 
 import com.footballstore.exception.DomainException;
+import com.footballstore.security.AuthenticationMetadata;
 import com.footballstore.user.model.User;
 import com.footballstore.user.model.UserRole;
 import com.footballstore.user.repository.UserRepository;
-import com.footballstore.web.dto.LoginRequest;
 import com.footballstore.web.dto.RegisterRequest;
 import com.footballstore.web.dto.UserEditRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +22,7 @@ import java.util.UUID;
 
 @Service
 @Slf4j
-public class UserService {
+public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -46,24 +49,6 @@ public class UserService {
         userRepository.save(user);
 
         log.info("Successfully registered user with email [%s].".formatted(registerRequest.getEmail()));
-    }
-
-    public User loginUser(LoginRequest loginRequest) {
-        Optional<User> optionalUser = userRepository.findByEmail(loginRequest.getEmail());
-
-        if (optionalUser.isEmpty()) {
-            throw new DomainException("Wrong email address or password!");
-        }
-
-        User user = optionalUser.get();
-
-        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            throw new DomainException("Wrong email address or password!");
-        }
-
-        log.info("Successfully logged in user with email [%s].".formatted(user.getEmail()));
-
-        return user;
     }
 
     public void editUserInfo(UUID userId, UserEditRequest userEditRequest) {
@@ -102,5 +87,14 @@ public class UserService {
 
     public void deleteUser(UUID userId) {
         userRepository.deleteById(userId);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new DomainException("User with email [%s] does not exist!".formatted(email)));
+
+        return new AuthenticationMetadata(user.getId(), user.getEmail(), user.getPassword(), user.getRole());
     }
 }

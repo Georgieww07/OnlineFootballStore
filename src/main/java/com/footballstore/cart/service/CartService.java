@@ -74,14 +74,19 @@ public class CartService {
 
     @Transactional
     public void deleteCartItem(UUID productId) {
-        CartItem byProductId = cartItemRepository.findByProductId(productId);
+        Optional<CartItem> optionalCartItem = cartItemRepository.findByProductId(productId);
 
-        if (byProductId != null) {
-            cartItemRepository.delete(byProductId);
+        if (optionalCartItem.isPresent()) {
+            CartItem cartItem = optionalCartItem.get();
 
-            Cart cart = byProductId.getCart();
+            Cart cart = cartItem.getCart();
+
+            cart.getItems().remove(cartItem);
             cart.setLastUpdated(LocalDateTime.now());
+
             cartRepository.save(cart);
+
+            cartItemRepository.delete(cartItem);
         }
     }
 

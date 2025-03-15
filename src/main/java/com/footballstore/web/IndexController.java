@@ -2,15 +2,18 @@ package com.footballstore.web;
 
 import com.footballstore.product.model.Product;
 import com.footballstore.product.service.ProductService;
+import com.footballstore.security.AuthenticationMetadata;
 import com.footballstore.user.model.User;
 import com.footballstore.user.service.UserService;
 import com.footballstore.web.dto.RegisterRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -61,15 +64,20 @@ public class IndexController {
     }
 
     @GetMapping("/login")
-    public String getLoginPage(){
-        System.out.println();
-        return "login";
+    public ModelAndView getLoginPage(@RequestParam(value = "error", required = false) String errorParam){
+        ModelAndView modelAndView = new ModelAndView();
+
+        if (errorParam != null){
+            modelAndView.addObject("errorMessage", "Invalid username or password!");
+        }
+
+        modelAndView.setViewName("login");
+        return modelAndView;
     }
 
     @GetMapping("/home")
-    public ModelAndView getHomePage(){
-        //TODO:Remove these two lines they are for testing
-        User user = userService.getUserById(UUID.fromString("0fe1122a-fa46-4962-8a15-f666c3de8eed"));
+    public ModelAndView getHomePage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata){
+        User user = userService.getUserById(authenticationMetadata.getUserId());
 
         List<Product> featuredProducts = productService.getFeaturedProducts();
 

@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -37,13 +38,11 @@ public class OrderService {
             throw new IllegalStateException("Cart is empty! Cannot place order.");
         }
 
-        // Create order
         Order order = Order.builder()
                 .user(cart.getUser())
                 .createdOn(LocalDateTime.now())
                 .build();
 
-        // Convert CartItems to OrderItems
         List<OrderItem> orderItems = cart.getItems().stream()
                 .map(cartItem -> OrderItem.builder()
                         .order(order)
@@ -55,12 +54,10 @@ public class OrderService {
         orderItemRepository.saveAll(orderItems);
 
         order.setItems(orderItems);
-        order.setTotalPrice(calculateTotalPrice(order)); // Calculate total price of order
+        order.setTotalPrice(calculateTotalPrice(order));
 
-        // Save order to database
         orderRepository.save(order);
 
-        // Clear the cart after placing order
         cartService.clearCart(cart.getId());
 
 
@@ -74,6 +71,23 @@ public class OrderService {
 
     public List<Order> getOrdersByUser(User user) {
         return orderRepository.findAllByUserId(user.getId());
+    }
+
+    @Transactional
+    public void deleteOrderItem(UUID productId) {
+        Optional<OrderItem> optionalOrderItem = orderItemRepository.findByProductId(productId);
+
+        if (optionalOrderItem.isPresent()) {
+            OrderItem orderItem = optionalOrderItem.get();
+
+            Order order = orderItem.getOrder();
+            order.getItems().remove(orderItem);
+
+            orderRepository.save(order);
+
+            orderItemRepository.delete(orderItem);
+        }
+
     }
 }
 

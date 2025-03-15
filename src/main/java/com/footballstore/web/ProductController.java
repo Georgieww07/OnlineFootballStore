@@ -1,14 +1,18 @@
 package com.footballstore.web;
 
 import com.footballstore.cart.service.CartService;
+import com.footballstore.order.service.OrderService;
 import com.footballstore.product.model.Product;
 import com.footballstore.product.service.ProductService;
+import com.footballstore.security.AuthenticationMetadata;
 import com.footballstore.user.model.User;
 import com.footballstore.user.service.UserService;
 import com.footballstore.web.dto.ProductRequest;
 import com.footballstore.web.mapper.DtoMapper;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -23,20 +27,21 @@ public class ProductController {
     private final ProductService productService;
     private final UserService userService;
     private final CartService cartService;
+    private final OrderService orderService;
 
     @Autowired
-    public ProductController(ProductService productService, UserService userService, CartService cartService) {
+    public ProductController(ProductService productService, UserService userService, CartService cartService, OrderService orderService) {
         this.productService = productService;
         this.userService = userService;
         this.cartService = cartService;
+        this.orderService = orderService;
     }
 
     @GetMapping
-    public ModelAndView getProductsPage(){
+    public ModelAndView getProductsPage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
         ModelAndView modelAndView = new ModelAndView();
 
-        //TODO: remove these two lines they are for testing
-        User user = userService.getUserById(UUID.fromString("0fe1122a-fa46-4962-8a15-f666c3de8eed"));
+        User user = userService.getUserById(authenticationMetadata.getUserId());
         modelAndView.addObject("user", user);
 
         List<Product> products = productService.getAllProducts();
@@ -51,11 +56,11 @@ public class ProductController {
     }
 
     @GetMapping("/admin")
-    public ModelAndView getProductsAdminPage(){
+    @PreAuthorize("hasRole('ADMIN')")
+    public ModelAndView getProductsAdminPage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
         ModelAndView modelAndView = new ModelAndView();
 
-        //TODO: remove these two lines they are for testing
-        User user = userService.getUserById(UUID.fromString("0fe1122a-fa46-4962-8a15-f666c3de8eed"));
+        User user = userService.getUserById(authenticationMetadata.getUserId());
         modelAndView.addObject("user", user);
 
         List<Product> products = productService.getAllProducts();
@@ -68,11 +73,10 @@ public class ProductController {
     }
 
     @GetMapping("/new")
-    public ModelAndView getCreateProductPage(){
+    public ModelAndView getCreateProductPage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
         ModelAndView modelAndView = new ModelAndView();
 
-        //TODO: remove these two lines they are for testing
-        User user = userService.getUserById(UUID.fromString("0fe1122a-fa46-4962-8a15-f666c3de8eed"));
+        User user = userService.getUserById(authenticationMetadata.getUserId());
         modelAndView.addObject("user", user);
 
         modelAndView.addObject("productRequest", ProductRequest.builder().build());
@@ -83,12 +87,11 @@ public class ProductController {
     }
 
     @PostMapping
-    public ModelAndView createProduct(@Valid ProductRequest productRequest, BindingResult bindingResult){
+    public ModelAndView createProduct(@Valid ProductRequest productRequest, BindingResult bindingResult, @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
         if(bindingResult.hasErrors()){
             ModelAndView modelAndView = new ModelAndView();
 
-            //TODO: remove these two lines they are for testing
-            User user = userService.getUserById(UUID.fromString("0fe1122a-fa46-4962-8a15-f666c3de8eed"));
+            User user = userService.getUserById(authenticationMetadata.getUserId());
             modelAndView.addObject("user", user);
 
             modelAndView.setViewName("product-new");
@@ -103,11 +106,10 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ModelAndView getProductPage(@PathVariable UUID id){
+    public ModelAndView getProductPage(@PathVariable UUID id, @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
         ModelAndView modelAndView = new ModelAndView();
 
-        //TODO: remove these two lines they are for testing
-        User user = userService.getUserById(UUID.fromString("0fe1122a-fa46-4962-8a15-f666c3de8eed"));
+        User user = userService.getUserById(authenticationMetadata.getUserId());
         modelAndView.addObject("user", user);
 
         Product product = productService.getProductById(id);
@@ -120,16 +122,14 @@ public class ProductController {
     }
 
     @GetMapping("/{id}/info")
-    public ModelAndView getUpdateProductPage(@PathVariable UUID id){
+    public ModelAndView getUpdateProductPage(@PathVariable UUID id, @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
 
         ModelAndView modelAndView = new ModelAndView();
 
         Product product = productService.getProductById(id);
 
-        //TODO: remove these two lines they are for testing
-        User user = userService.getUserById(UUID.fromString("0fe1122a-fa46-4962-8a15-f666c3de8eed"));
+        User user = userService.getUserById(authenticationMetadata.getUserId());
         modelAndView.addObject("user", user);
-
 
         modelAndView.addObject("product", product);
         modelAndView.addObject("productRequest", DtoMapper.fromProduct(product));
@@ -141,16 +141,14 @@ public class ProductController {
     }
 
     @PutMapping("{id}/info")
-    public ModelAndView updateProduct(@PathVariable UUID id, @Valid ProductRequest productRequest, BindingResult bindingResult){
+    public ModelAndView updateProduct(@PathVariable UUID id, @Valid ProductRequest productRequest, BindingResult bindingResult, @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
         if(bindingResult.hasErrors()){
             ModelAndView modelAndView = new ModelAndView();
 
             Product product = productService.getProductById(id);
 
-            //TODO: remove these two lines they are for testing
-            User user = userService.getUserById(UUID.fromString("0fe1122a-fa46-4962-8a15-f666c3de8eed"));
+            User user = userService.getUserById(authenticationMetadata.getUserId());
             modelAndView.addObject("user", user);
-
 
             modelAndView.addObject("product", product);
             modelAndView.addObject("productRequest", productRequest);
@@ -166,13 +164,11 @@ public class ProductController {
     }
 
     @GetMapping("/browse")
-    public ModelAndView getProductsByCategory(@RequestParam(name = "category") String category){
+    public ModelAndView getProductsByCategory(@RequestParam(name = "category") String category, @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
         ModelAndView modelAndView = new ModelAndView();
 
-        //TODO: remove these two lines they are for testing
-        User user = userService.getUserById(UUID.fromString("0fe1122a-fa46-4962-8a15-f666c3de8eed"));
+        User user = userService.getUserById(authenticationMetadata.getUserId());
         modelAndView.addObject("user", user);
-
 
         List<Product> productsByCategory = productService.getProductsByCategory(category);
 
@@ -187,6 +183,8 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public String deleteProduct(@PathVariable UUID id){
         cartService.deleteCartItem(id);
+        orderService.deleteOrderItem(id);
+
         productService.deleteProduct(id);
 
         return "redirect:/products/admin";

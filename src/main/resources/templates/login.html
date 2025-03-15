@@ -81,13 +81,14 @@
       <!-- Email -->
       <div class="mb-3">
         <label class="form-label">Email</label>
-        <input type="email" name="email" class="form-control" required placeholder="Enter your email">
+        <input type="email" name="email" id="email" class="form-control" required placeholder="Enter your email">
       </div>
 
       <!-- Password -->
       <div class="mb-3 position-relative">
         <label class="form-label">Password</label>
         <input type="password" name="password" class="form-control" id="password" required placeholder="Enter your password">
+        <p th:if="${errorMessage}" th:text="${errorMessage}" class="alert-danger"></p>
       </div>
 
       <!-- Login Button -->

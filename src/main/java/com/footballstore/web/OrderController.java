@@ -2,9 +2,11 @@ package com.footballstore.web;
 
 import com.footballstore.order.model.Order;
 import com.footballstore.order.service.OrderService;
+import com.footballstore.security.AuthenticationMetadata;
 import com.footballstore.user.model.User;
 import com.footballstore.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,12 +30,11 @@ public class OrderController {
     }
 
     @GetMapping
-    public ModelAndView getOrdersPage() {
+    public ModelAndView getOrdersPage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
 
         ModelAndView modelAndView = new ModelAndView();
 
-        //TODO: remove these two lines they are for testing
-        User user = userService.getUserById(UUID.fromString("0fe1122a-fa46-4962-8a15-f666c3de8eed"));
+        User user = userService.getUserById(authenticationMetadata.getUserId());
         modelAndView.addObject("user", user);
 
         List<Order> orders = orderService.getOrdersByUser(user);
@@ -46,16 +47,15 @@ public class OrderController {
     }
 
     @PostMapping
-    public ModelAndView placeOrder(){
+    public ModelAndView placeOrder(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
 
         ModelAndView modelAndView = new ModelAndView();
-        //TODO:Remove these two lines they are for testing
-        User user = userService.getUserById(UUID.fromString("0fe1122a-fa46-4962-8a15-f666c3de8eed"));
+
+        User user = userService.getUserById(authenticationMetadata.getUserId());
 
         modelAndView.addObject("user", user);
 
         orderService.placeOrder(user);
-
 
         return new ModelAndView("redirect:/orders");
 

@@ -52,7 +52,7 @@
                 <a class="navbar-brand me-3" href="/" style="font-weight: bold; font-size: 24px;">Football Store</a>
 
                 <!-- Admin Buttons (Visible Only to Admins) -->
-                <div class="d-flex">
+                <div class="d-flex" th:if="${user.role.name() == 'ADMIN'}">
                     <a class="btn btn-light me-2 admin-btn" th:href="@{/products/admin}">Manage Products</a>
                     <a class="btn btn-primary admin-btn" th:href="@{/users}">Manage Users</a>
                 </div>
