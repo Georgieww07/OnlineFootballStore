@@ -190,14 +190,16 @@
                                 <th>Product</th>
                                 <th>Category</th>
                                 <th>Brand</th>
+                                <th>Quantity</th>
                                 <th>Price</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr th:each="item : ${order.items}">
                                 <td th:text="${item.product.name}"></td>
-                                <td th:text="${item.product.category}"></td>
-                                <td th:text="${item.product.brand}"></td>
+                                <td th:text="${#strings.capitalize(#strings.toLowerCase(item.product.category))}"></td>
+                                <td th:text="${#strings.capitalize(#strings.toLowerCase(item.product.brand))}"></td>
+                                <td th:text="${item.quantity}"></td>
                                 <td><span th:text="${item.product.price}"></span>$</td>
                             </tr>
 
@@ -211,11 +213,13 @@
                                 <th>Product</th>
                                 <th>Category</th>
                                 <th>Brand</th>
+                                <th>Quantity</th>
                                 <th>Price</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
+                                <td>-</td>
                                 <td>-</td>
                                 <td>-</td>
                                 <td>-</td>

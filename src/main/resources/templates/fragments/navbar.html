@@ -49,7 +49,7 @@
         <div class="container-fluid">
             <div class="d-flex align-items-center">
                 <!-- Logo (Football Store) -->
-                <a class="navbar-brand me-3" href="/" style="font-weight: bold; font-size: 24px;">Football Store</a>
+                <a class="navbar-brand me-3" th:href="@{/home}" style="font-weight: bold; font-size: 24px;">Football Store</a>
 
                 <!-- Admin Buttons (Visible Only to Admins) -->
                 <div class="d-flex" th:if="${user.role.name() == 'ADMIN'}">
