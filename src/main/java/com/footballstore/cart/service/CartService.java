@@ -130,8 +130,9 @@ public class CartService {
 
         List<Cart> oldCarts = cartRepository.findByLastUpdatedBefore(expirationTime);
 
-        cartRepository.deleteAll(oldCarts);
-        System.out.println(oldCarts.size() + " abandoned carts deleted.");
+        oldCarts.forEach(cart -> clearCart(cart.getId()));
+
+        System.out.println(oldCarts.size() + " abandoned carts cleared.");
 
     }
 }
