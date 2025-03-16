@@ -74,19 +74,17 @@ public class CartService {
 
     @Transactional
     public void deleteCartItem(UUID productId) {
-        Optional<CartItem> optionalCartItem = cartItemRepository.findByProductId(productId);
+        List<CartItem> cartItems = cartItemRepository.findByProductId(productId);
 
-        if (optionalCartItem.isPresent()) {
-            CartItem cartItem = optionalCartItem.get();
+        if (!cartItems.isEmpty()) {
+            cartItems.forEach(cartItem -> {
+                Cart cart = cartItem.getCart();
+                cart.getItems().remove(cartItem);
+                cart.setLastUpdated(LocalDateTime.now());
 
-            Cart cart = cartItem.getCart();
-
-            cart.getItems().remove(cartItem);
-            cart.setLastUpdated(LocalDateTime.now());
-
-            cartRepository.save(cart);
-
-            cartItemRepository.delete(cartItem);
+                cartRepository.save(cart);
+                cartItemRepository.delete(cartItem);
+            });
         }
     }
 
@@ -126,6 +124,7 @@ public class CartService {
         cartRepository.save(cart);
     }
 
+    @Transactional
     public void cleanUpOldCarts() {
         LocalDateTime expirationTime = LocalDateTime.now().minusMinutes(1);
 

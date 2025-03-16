@@ -184,7 +184,6 @@ public class ProductController {
     public String deleteProduct(@PathVariable UUID id){
         cartService.deleteCartItem(id);
         orderService.deleteOrderItem(id);
-
         productService.deleteProduct(id);
 
         return "redirect:/products/admin";

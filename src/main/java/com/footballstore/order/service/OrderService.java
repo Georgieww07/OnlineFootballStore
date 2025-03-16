@@ -75,19 +75,17 @@ public class OrderService {
 
     @Transactional
     public void deleteOrderItem(UUID productId) {
-        Optional<OrderItem> optionalOrderItem = orderItemRepository.findByProductId(productId);
+        List<OrderItem> orderItems = orderItemRepository.findByProductId(productId);
 
-        if (optionalOrderItem.isPresent()) {
-            OrderItem orderItem = optionalOrderItem.get();
+        if (!orderItems.isEmpty()) {
+            orderItems.forEach(orderItem -> {
+                Order order = orderItem.getOrder();
+                order.getItems().remove(orderItem);
 
-            Order order = orderItem.getOrder();
-            order.getItems().remove(orderItem);
-
-            orderRepository.save(order);
-
-            orderItemRepository.delete(orderItem);
+                orderRepository.save(order);
+                orderItemRepository.delete(orderItem);
+            });
         }
-
     }
 }
 
