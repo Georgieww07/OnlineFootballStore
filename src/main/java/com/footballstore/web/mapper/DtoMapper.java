@@ -11,10 +11,15 @@ public class DtoMapper {
 
     public static UserEditRequest fromUser(User user) {
 
+        String phoneNumber = "";
+        if (user.getPhoneNumber() != null) {
+            phoneNumber = user.getPhoneNumber().substring(4, 13);
+        }
+
         return UserEditRequest.builder()
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
-                .phoneNumber(user.getPhoneNumber())
+                .phoneNumber(phoneNumber)
                 .build();
     }
 

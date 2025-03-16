@@ -58,8 +58,10 @@ public class UserService implements UserDetailsService {
         user.setLastName(userEditRequest.getLastName());
         if (!userEditRequest.getPhoneNumber().isEmpty()) {
             user.setPhoneNumber("+359" + userEditRequest.getPhoneNumber());
+        } else {
+            user.setPhoneNumber(null);
         }
-        user.setPhoneNumber(userEditRequest.getPhoneNumber());
+
         userRepository.save(user);
 
         log.info("Successfully edited user with email [%s].".formatted(user.getEmail()));
@@ -78,7 +80,7 @@ public class UserService implements UserDetailsService {
 
         if (user.getRole() == UserRole.CUSTOMER) {
             user.setRole(UserRole.ADMIN);
-        }else {
+        } else {
             user.setRole(UserRole.CUSTOMER);
         }
 

@@ -1,251 +1,217 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" crossorigin="anonymous">
-    <style>
-        body {
-            background: url('https://images.pexels.com/photos/114296/pexels-photo-114296.jpeg') no-repeat center center fixed;
-            background-size: cover;
-            font-family: 'Poppins', sans-serif;
-        }
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .profile-card {
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 15px;
-            padding: 50px;
-            width: 500px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.4);
-            color: white;
-        }
-        .profile-card h2 {
-            font-size: 30px;
-            font-weight: bold;
-            margin-bottom: 25px;
-        }
-        .form-control {
-            background: rgba(255, 255, 255, 0.85);
-            border: none;
-            border-radius: 10px;
-            padding: 15px;
-            font-size: 18px;
-        }
-        .btn-custom {
-            border-radius: 25px;
-            padding: 14px;
-            font-size: 20px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            width: 100%;
-        }
-        .btn-save {
-            background: #28a745;
-            color: white;
-        }
-        .btn-save:hover {
-            background: #218838;
-        }
-        .btn-back {
-            background: #d9534f;
-            color: white;
-        }
-        .btn-back:hover {
-            background: #c9302c;
-        }
+  <title>Create Product - Football Store</title>
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: #f4f4f4;
+    }
 
-        .nav-link i {
-            transition: transform 0.3s ease;
-        }
-        .nav-link:hover i {
-            transform: scale(1.2);
-        }
+    .container {
+      margin-top: 40px;
+    }
+
+    .card {
+      max-width: 700px;
+      margin: auto;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-label {
+      font-weight: bold;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 12px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border-radius: 8px;
+    }
+
+    .form-control {
+      border-radius: 6px;
+    }
+
+    .toggle-switch {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1rem;
+    }
+
+    .image-preview {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+    }
+
+    .image-preview img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 2px solid #ddd;
+    }
 
 
-         /*here*/
+
+    .navbar {
+      background: linear-gradient(to right, #DA70D6, #2575fc);
+      border-bottom: 2px solid #ccc;
+    }
+    .navbar-brand {
+      font-weight: bold;
+      font-size: 28px;
+      color: white !important;
+    }
+    .nav-link {
+      color: white !important;
+      font-size: 18px;
+      padding: 10px 15px;
+      border-radius: 5px;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+    .nav-link:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      transform: scale(1.1);
+    }
+
+    .btn-outline-light {
+      border-radius: 30px;
+      padding: 8px 15px;
+      transition: all 0.3s ease;
+    }
+    .btn-outline-light:hover {
+      background-color: #2575fc;
+      color: white;
+    }
+    /* Hover effect for the icons */
+    .nav-link i {
+      transition: transform 0.3s ease;
+    }
+    .nav-link:hover i {
+      transform: scale(1.2);
+    }
+
+    .admin-btn {
+      font-size: 16px;
+      padding: 8px 15px;
+      font-weight: bold;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+    }
+
+    .admin-btn:hover {
+      transform: scale(1.1);
+    }
+
+    /*Phone Number*/
+    .phone-input-container {
+      display: flex;
+      align-items: center;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      overflow: hidden;
+      width: 100%; /* Ensure it matches other input fields */
+      padding: 0;
+      background-color: #f9f9f9;
+      height: 45px; /* Match form-control height */
+    }
+
+    .country-code {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #FFFFFF;
+      padding: 8px 12px;
+      font-weight: bold;
+      border-right: 2px solid #ccc;
+      color: #212529;
+      height: 100%;
+      white-space: nowrap;
+    }
+
+    .country-code img {
+      width: 20px;
+      height: 14px;
+      margin-left: 5px;
+    }
+
+    .phone-number {
+      border: none;
+      padding: 10px;
+      outline: none;
+      font-size: 16px;
+      flex-grow: 1;
+      height: 100%;
+      width: 100%; /* Ensures it stretches to match other fields */
+      background-color: transparent;
+    }
 
 
-        .hero-section h1 {
-            font-size: 4rem;
-            font-weight: 700;
-        }
 
-        .hero-section p {
-            font-size: 1.5rem;
-        }
-
-        .btn-custom {
-            font-size: 1.2rem;
-            font-weight: 700;
-            padding: 12px 30px;
-            border-radius: 8px;
-            transition: 0.3s;
-        }
-
-        .btn-custom:hover {
-            transform: scale(1.05);
-        }
-
-        .category-card img {
-            height: 200px;
-            object-fit: cover;
-            border-radius: 10px;
-        }
-
-        .product-card img {
-            height: 250px;
-            width: 100%;
-            object-fit: cover;
-        }
-
-        .navbar {
-            background: linear-gradient(to right, #4CAF50, #8BC34A);
-            border-bottom: 2px solid #ccc;
-        }
-        .navbar-brand {
-            font-weight: bold;
-            font-size: 28px;
-            color: white !important;
-        }
-        .nav-link {
-            color: white !important;
-            font-size: 18px;
-            padding: 10px 15px;
-            border-radius: 5px;
-            transition: background-color 0.3s, transform 0.3s;
-        }
-        .nav-link:hover {
-            background-color: rgba(255, 255, 255, 0.2);
-            transform: scale(1.1);
-        }
-        .form-control {
-            border-radius: 30px;
-            padding: 10px 15px;
-            width: 200px;
-            transition: all 0.3s ease;
-        }
-        .form-control:focus {
-            box-shadow: 0px 0px 8px rgba(0, 123, 255, 0.6);
-            border-color: #2575fc;
-        }
-        .form-width{
-            width: 400px;
-        }
-        .btn-outline-light {
-            border-radius: 30px;
-            padding: 8px 15px;
-            transition: all 0.3s ease;
-        }
-        .btn-outline-light:hover {
-            background-color: #2575fc;
-            color: white;
-        }
-        /* Hover effect for the icons */
-        .nav-link i {
-            transition: transform 0.3s ease;
-        }
-        .nav-link:hover i {
-            transform: scale(1.2);
-        }
-
-    /*    Phone Number */
-        .phone-input-container {
-            display: flex;
-            align-items: center;
-            border: 2px solid #ccc;
-            border-radius: 8px;
-            overflow: hidden;
-            width: fit-content;
-            padding: 5px;
-            background-color: #f9f9f9;
-        }
-
-        .country-code {
-            display: flex;
-            align-items: center;
-            background-color: #FFFFFF;
-            padding: 8px 12px;
-            font-weight: bold;
-            border-right: 2px solid #ccc;
-            color: #212529;
-        }
-
-        .country-code img {
-            width: 20px;
-            height: 14px;
-            margin-left: 5px;
-        }
-
-        .phone-number {
-            border: none;
-            padding: 8px;
-            outline: none;
-            width: 300px;
-            font-size: 16px;
-        }
-
-        .admin-btn {
-            font-size: 16px;
-            padding: 8px 15px;
-            font-weight: bold;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-        }
-
-        .admin-btn:hover {
-            transform: scale(1.1);
-        }
-
-        .top-button{
-            margin-bottom: -50px;
-        }
-    </style>
+  </style>
 </head>
 <body>
 
+<!-- Navbar -->
 <div th:insert="fragments/navbar :: nav-bar"></div>
 
-<div class="top-button">
-    <a th:href="@{/orders}" class="btn btn-light  btn-lg btn-block font-weight-bold">My Orders</a>
-</div>
-
-
 <div class="container">
-    <div class="profile-card">
-        <h2><i class="fas fa-user-circle"></i> My Profile</h2>
-        <form th:action="@{'/users/' + ${user.id} + '/profile'}" th:method="PUT" th:object="${userEditRequest}">
-            <div class="mb-4">
-                <input type="text" class="form-control form-width" name="firstName"  placeholder="First Name" th:field="*{firstName}">
-                <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger"></p>
-            </div>
-            <div class="mb-4">
-                <input type="text" class="form-control form-width" name="lastName"  placeholder="Last Name" th:field="*{lastName}">
-                <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger"></p>
-            </div>
-            <div class="mb-4">
-                <input type="email" class="form-control form-width text-secondary" name="email"  readonly th:value="${user.email}">
-            </div>
-            <div class="phone-input-container mb-4">
-                <div class="country-code">
-                    +359 <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Flag_of_Bulgaria.svg" alt="BG Flag">
-                </div>
-                <input type="text" class="phone-number" placeholder="Phone Number" maxlength="9" th:field="*{phoneNumber}">
-            </div>
-            <p th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" class="text-danger"></p>
-            <div class="d-grid gap-3">
-                <button type="submit" class="btn btn-custom btn-save"><i class="fas fa-save"></i> Save</button>
-            </div>
-        </form>
-    </div>
+  <div class="card shadow">
+    <h2 class="text-center mb-4"><i class="fas fa-user-circle"></i>My Profile</h2>
+
+    <form th:action="@{'/users/' + ${user.id} + '/profile'}" th:method="PUT" th:object="${userEditRequest}">
+
+      <!-- First Name -->
+      <div class="mb-3">
+        <label class="form-label">First Name</label>
+        <input type="text" class="form-control form-width" name="firstName"  placeholder="Enter your first name" th:field="*{firstName}">
+        <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="alert-danger"></p>
+      </div>
+
+      <!-- Last Name -->
+      <div class="mb-3">
+        <label class="form-label">Last Name</label>
+        <input type="text" class="form-control form-width" name="lastName"  placeholder="Enter your last name" th:field="*{lastName}">
+        <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="alert-danger"></p>
+      </div>
+
+      <!-- Email -->
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-control form-width text-secondary" name="email"  readonly th:value="${user.email}">
+      </div>
+
+
+      <!-- Phone number -->
+      <div class="mb-3">
+        <label class="form-label">Phone Number</label>
+        <div class="phone-input-container">
+          <div class="country-code">
+            +359 <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Flag_of_Bulgaria.svg" alt="BG Flag">
+          </div>
+          <input type="text" class="phone-number" placeholder="Enter your phone number" maxlength="9" th:field="*{phoneNumber}">
+        </div>
+        <p th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" class="alert-danger"></p>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="btn btn-primary btn-submit"><i class="fas fa-save"></i>Save</button>
+    </form>
+  </div>
 </div>
-<!--Footer fragment-->
-<div th:insert="fragments/footer :: footer" class="text-white"></div>
+
+<!-- Footer -->
+<th:block th:insert="fragments/footer :: footer"></th:block>
+
 
 </body>
 </html>
