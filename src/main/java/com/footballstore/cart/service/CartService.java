@@ -88,10 +88,6 @@ public class CartService {
         }
     }
 
-    public List<CartItem> getCartItems() {
-        return cartItemRepository.findAll();
-    }
-
     public BigDecimal getCartTotal(Cart cart) {
         return cart.getItems().stream()
                 .map(item -> item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
@@ -109,7 +105,7 @@ public class CartService {
     }
 
     public Cart getCartByUserId(UUID userId) {
-        return cartRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("Cart with user [%s] not found!".formatted(userId)));
+        return cartRepository.findByUserId(userId).orElseThrow(() -> new DomainException("Cart with user [%s] not found!".formatted(userId)));
     }
 
     @Transactional

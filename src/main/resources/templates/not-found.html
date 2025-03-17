@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Not Found</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #2c3e50, #4b6584);
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background-color: #fff;
+      padding: 3rem 2rem;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      text-align: center;
+      max-width: 800px;
+    }
+    .icon {
+      font-size: 5rem;
+      color: #ff6b6b;
+      margin-bottom: 1rem;
+    }
+    h1 {
+      margin: 0.5rem 0;
+      font-size: 2rem;
+      color: #333;
+    }
+    p {
+      font-size: 1.1rem;
+      color: #555;
+      margin-bottom: 1.5rem;
+    }
+    a {
+      text-decoration: none;
+      color: white;
+      background-color: #007bff;
+      padding: 0.7rem 1.5rem;
+      border-radius: 25px;
+      transition: background-color 0.3s ease;
+      display: inline-block;
+    }
+    a:hover {
+      background-color: #0056b3;
+    }
+
+    .info-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 1.5rem;
+      /*text-align: left;*/
+    }
+  </style>
+</head>
+<body>
+<div class="card">
+  <i class="fas fa-exclamation-triangle icon"></i>
+  <h1>Oops! We couldn't find that.</h1>
+  <p>The page you’re looking for doesn’t exist or has been moved. If you need any further assistance, please contact our support team.</p>
+
+  <div class="info-container">
+    <strong>Error code:</strong>
+    <span>404 Not Found</span>
+  </div>
+
+  <a th:href="@{/home}">Go Home</a>
+</div>
+</body>
+</html>

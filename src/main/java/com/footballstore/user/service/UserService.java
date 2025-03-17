@@ -1,6 +1,7 @@
 package com.footballstore.user.service;
 
 import com.footballstore.exception.DomainException;
+import com.footballstore.exception.EmailAlreadyExistException;
 import com.footballstore.security.AuthenticationMetadata;
 import com.footballstore.user.model.User;
 import com.footballstore.user.model.UserRole;
@@ -36,7 +37,7 @@ public class UserService implements UserDetailsService {
         Optional<User> optionalUser = userRepository.findByEmail(registerRequest.getEmail());
 
         if (optionalUser.isPresent()) {
-            throw new DomainException("User with email [%s] already exists!".formatted(registerRequest.getEmail()));
+            throw new EmailAlreadyExistException("User with email [%s] already exists!".formatted(registerRequest.getEmail()));
         }
 
         User user = User.builder()

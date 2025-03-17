@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Internal Server Error</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #2c3e50, #4b6584);
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .card {
+      background-color: #fff;
+      padding: 3rem 2rem;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      text-align: center;
+      max-width: 800px;
+    }
+    .icon {
+      font-size: 5rem;
+      color: #ffa502;
+      margin-bottom: 1rem;
+    }
+    h1 {
+      margin: 0.5rem 0;
+      font-size: 2rem;
+      color: #333;
+    }
+    p {
+      font-size: 1.1rem;
+      color: #555;
+      margin-bottom: 1.5rem;
+    }
+    .info-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+    a {
+      text-decoration: none;
+      color: white;
+      background-color: #007bff;
+      padding: 0.7rem 1.5rem;
+      border-radius: 25px;
+      transition: background-color 0.3s ease;
+      display: inline-block;
+    }
+    a:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+<div class="card">
+  <i class="fas fa-bug icon"></i>
+  <h1>Oops! Something went wrong on our end. Please try again later.</h1>
+  <p>Our team is working to resolve the issue. If you need any further assistance, please contact our support team.</p>
+
+  <div class="info-container">
+    <strong>Error code:</strong>
+    <span>500 Internal Server Error</span>
+  </div>
+
+  <div class="info-container">
+    <strong>Additional Message:</strong>
+    <span th:text="${exceptionMessage}"></span>
+  </div>
+
+  <a th:href="@{/home}">Go Home</a>
+</div>
+</body>
+</html>

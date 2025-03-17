@@ -85,6 +85,7 @@
                 <label for="username" class="form-label">Email</label>
                 <input type="email" name="email" id="username" class="form-control" required placeholder="Enter your email" th:field="*{email}">
                 <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="alert-danger"></p>
+                <p th:text="${emailAlreadyExistMessage}" class="alert-danger"></p>
             </div>
 
             <!-- Password -->
