@@ -1,11 +1,9 @@
-package com.footballstore.orderitem.model;
+package com.footballstore.order.model;
 
-import com.footballstore.order.model.Order;
 import com.footballstore.product.model.Product;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 
 @Builder

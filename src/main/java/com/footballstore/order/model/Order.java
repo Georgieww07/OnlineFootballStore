@@ -1,6 +1,5 @@
 package com.footballstore.order.model;
 
-import com.footballstore.orderitem.model.OrderItem;
 import com.footballstore.user.model.User;
 import jakarta.persistence.*;
 import lombok.*;

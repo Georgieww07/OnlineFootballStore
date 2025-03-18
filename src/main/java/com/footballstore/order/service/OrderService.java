@@ -4,8 +4,8 @@ import com.footballstore.cart.model.Cart;
 import com.footballstore.cart.service.CartService;
 import com.footballstore.order.model.Order;
 import com.footballstore.order.repository.OrderRepository;
-import com.footballstore.orderitem.model.OrderItem;
-import com.footballstore.orderitem.repository.OrderItemRepository;
+import com.footballstore.order.model.OrderItem;
+import com.footballstore.order.repository.OrderItemRepository;
 import com.footballstore.user.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 

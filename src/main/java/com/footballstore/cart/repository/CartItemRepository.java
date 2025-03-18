@@ -1,12 +1,10 @@
-package com.footballstore.cartitem.repository;
+package com.footballstore.cart.repository;
 
-import com.footballstore.cartitem.model.CartItem;
-import com.footballstore.product.model.Product;
+import com.footballstore.cart.model.CartItem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Repository

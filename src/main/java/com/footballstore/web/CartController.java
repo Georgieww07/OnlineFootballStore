@@ -2,7 +2,7 @@ package com.footballstore.web;
 
 import com.footballstore.cart.model.Cart;
 import com.footballstore.cart.service.CartService;
-import com.footballstore.cartitem.model.CartItem;
+import com.footballstore.cart.model.CartItem;
 import com.footballstore.security.AuthenticationMetadata;
 import com.footballstore.user.model.User;
 import com.footballstore.user.service.UserService;

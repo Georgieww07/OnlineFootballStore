@@ -2,8 +2,8 @@ package com.footballstore.cart.service;
 
 import com.footballstore.cart.model.Cart;
 import com.footballstore.cart.repository.CartRepository;
-import com.footballstore.cartitem.model.CartItem;
-import com.footballstore.cartitem.repository.CartItemRepository;
+import com.footballstore.cart.model.CartItem;
+import com.footballstore.cart.repository.CartItemRepository;
 import com.footballstore.exception.DomainException;
 import com.footballstore.product.model.Product;
 import com.footballstore.product.service.ProductService;
