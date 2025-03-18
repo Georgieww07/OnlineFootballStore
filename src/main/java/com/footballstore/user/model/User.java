@@ -41,7 +41,7 @@ public class User {
     @Column(nullable = false)
     private LocalDateTime createdOn;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     List<Order> orders = new ArrayList<>();
 
     @OneToOne(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
