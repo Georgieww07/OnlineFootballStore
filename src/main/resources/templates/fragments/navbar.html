@@ -53,8 +53,9 @@
 
                 <!-- Admin Buttons (Visible Only to Admins) -->
                 <div class="d-flex" th:if="${user.role.name() == 'ADMIN'}">
-                    <a class="btn btn-light me-2 admin-btn" th:href="@{/products/admin}">Manage Products</a>
-                    <a class="btn btn-primary admin-btn" th:href="@{/users}">Manage Users</a>
+                    <a class="btn btn-light me-2 admin-btn mr-1" th:href="@{/products/admin}">Manage Products</a>
+                    <a class="btn btn-primary admin-btn mr-1" th:href="@{/users}">Manage Users</a>
+                    <a class="btn btn-primary admin-btn" th:href="@{/emails}">Emails</a>
                 </div>
             </div>
 

@@ -1,5 +1,6 @@
 package com.footballstore.user.service;
 
+import com.footballstore.email.service.EmailService;
 import com.footballstore.exception.DomainException;
 import com.footballstore.exception.EmailAlreadyExistException;
 import com.footballstore.security.AuthenticationMetadata;
@@ -26,11 +27,13 @@ import java.util.UUID;
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, EmailService emailService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
     }
 
     public void registerUser(RegisterRequest registerRequest) {
@@ -48,6 +51,9 @@ public class UserService implements UserDetailsService {
                 .build();
 
         userRepository.save(user);
+
+        String emailBody = "Welcome to our community. Shop easily top-quality products.";
+        emailService.sendEmail(user.getEmail(), "Sending email for registering", emailBody);
 
         log.info("Successfully registered user with email [%s].".formatted(registerRequest.getEmail()));
     }
