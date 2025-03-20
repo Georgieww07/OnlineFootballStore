@@ -158,7 +158,17 @@
                 <th>Actions</th>
             </tr>
             </thead>
-            <tbody th:each="order : ${orders}">
+            <tbody th:if="${#lists.isEmpty(orders)}">
+            <tr>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+
+            </tbody>
+            <tbody th:unless="${#lists.isEmpty(orders)}" th:each="order : ${orders}">
             <!-- Sample Order 1 -->
             <tr>
                 <td th:text="${order.id}">123e4567-e89b-12d3-a456-426614174001</td>
