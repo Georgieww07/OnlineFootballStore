@@ -106,4 +106,23 @@ public class UserService implements UserDetailsService {
 
         return new AuthenticationMetadata(user.getId(), user.getEmail(), user.getPassword(), user.getRole());
     }
+
+    public void createAdminIfNotExist(){
+        Optional<User> optionalUser = userRepository.findByEmail("onlinefootballstoreofficial@gmail.com");
+
+        if (optionalUser.isEmpty()) {
+            User adminUser = User.builder()
+                    .email("onlinefootballstoreofficial@gmail.com")
+                    .password(passwordEncoder.encode("footballstore123"))
+                    .role(UserRole.ADMIN)
+                    .firstName("ADMIN")
+                    .lastName("ADMIN")
+                    .createdOn(LocalDateTime.now())
+                    .build();
+
+            userRepository.save(adminUser);
+
+            log.info("Successfully created admin with email [%s].".formatted(adminUser.getEmail()));
+        }
+    }
 }
