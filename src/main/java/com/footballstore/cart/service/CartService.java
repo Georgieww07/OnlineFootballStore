@@ -99,7 +99,7 @@ public class CartService {
     public Cart initCart(User user){
         Cart cart = Cart.builder()
                 .user(user)
-                .items(new ArrayList<CartItem>())
+                .items(new ArrayList<>())
                 .lastUpdated(LocalDateTime.now())
                 .build();
 
