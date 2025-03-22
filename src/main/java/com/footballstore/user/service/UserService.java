@@ -46,7 +46,7 @@ public class UserService implements UserDetailsService {
         User user = User.builder()
                 .email(registerRequest.getEmail())
                 .password(passwordEncoder.encode(registerRequest.getPassword()))
-                .role(UserRole.CUSTOMER)
+                .role(UserRole.USER)
                 .createdOn(LocalDateTime.now())
                 .build();
 
@@ -85,10 +85,10 @@ public class UserService implements UserDetailsService {
     public void changeRole(UUID userId) {
         User user = getUserById(userId);
 
-        if (user.getRole() == UserRole.CUSTOMER) {
+        if (user.getRole() == UserRole.USER) {
             user.setRole(UserRole.ADMIN);
         } else {
-            user.setRole(UserRole.CUSTOMER);
+            user.setRole(UserRole.USER);
         }
 
         userRepository.save(user);
