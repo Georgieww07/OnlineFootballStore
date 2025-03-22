@@ -68,7 +68,7 @@ public class OrderService {
     }
 
     public List<Order> getOrdersByUser(User user) {
-        return orderRepository.findAllByUserId(user.getId());
+        return orderRepository.findAllByUserIdOrderByCreatedOnDesc(user.getId());
     }
 }
 
