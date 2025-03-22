@@ -9,6 +9,7 @@ import com.footballstore.product.model.Product;
 import com.footballstore.product.service.ProductService;
 import com.footballstore.user.model.User;
 import com.footballstore.user.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 @Service
 public class CartService {
     private final UserService userService;
@@ -131,9 +133,6 @@ public class CartService {
 
         oldCarts.forEach(cart -> clearCart(cart.getId()));
 
-
-        //TODO: log info for the scheduler being triggered
-        System.out.println(oldCarts.size() + " abandoned carts cleared.");
-
+        log.info("[%d] abandoned carts cleared.".formatted(oldCarts.size()));
     }
 }
