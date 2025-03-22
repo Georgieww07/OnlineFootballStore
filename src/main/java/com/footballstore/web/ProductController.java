@@ -27,14 +27,12 @@ public class ProductController {
     private final ProductService productService;
     private final UserService userService;
     private final CartService cartService;
-    private final OrderService orderService;
 
     @Autowired
-    public ProductController(ProductService productService, UserService userService, CartService cartService, OrderService orderService) {
+    public ProductController(ProductService productService, UserService userService, CartService cartService) {
         this.productService = productService;
         this.userService = userService;
         this.cartService = cartService;
-        this.orderService = orderService;
     }
 
     @GetMapping
