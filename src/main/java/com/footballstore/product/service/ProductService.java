@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,7 +38,11 @@ public class ProductService {
     }
 
     public List<Product> getAllProducts() {
-        return productRepository.findAll();
+        List<Category> categoryOrder = List.of(Category.BOOTS, Category.BALLS, Category.JERSEYS);
+
+        return productRepository.findAll().stream()
+                .sorted(Comparator.comparing(product -> categoryOrder.indexOf(product.getCategory())))
+                .toList();
     }
 
     public List<Product> getFeaturedProducts() {
