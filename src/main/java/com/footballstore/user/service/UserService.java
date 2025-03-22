@@ -75,7 +75,7 @@ public class UserService implements UserDetailsService {
     }
 
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        return userRepository.findAllByOrderByCreatedOnDesc();
     }
 
     public User getUserById(UUID userId) {
