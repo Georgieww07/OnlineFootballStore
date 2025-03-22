@@ -105,7 +105,9 @@ public class CartService {
     }
 
     public Cart getCartByUserId(UUID userId) {
-        return cartRepository.findByUserId(userId).orElseThrow(() -> new DomainException("Cart with user [%s] not found!".formatted(userId)));
+        Optional<Cart> cart = cartRepository.findByUserId(userId);
+        return cart.orElseGet(() -> initCart(userService.getUserById(userId)));
+
     }
 
     @Transactional
@@ -122,12 +124,15 @@ public class CartService {
 
     @Transactional
     public void cleanUpOldCarts() {
-        LocalDateTime expirationTime = LocalDateTime.now().minusMinutes(1);
+
+        LocalDateTime expirationTime = LocalDateTime.now().minusDays(7);
 
         List<Cart> oldCarts = cartRepository.findByLastUpdatedBefore(expirationTime);
 
         oldCarts.forEach(cart -> clearCart(cart.getId()));
 
+
+        //TODO: log info for the scheduler being triggered
         System.out.println(oldCarts.size() + " abandoned carts cleared.");
 
     }

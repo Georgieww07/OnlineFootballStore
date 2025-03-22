@@ -31,26 +31,15 @@ public class CartController {
     @GetMapping
     public ModelAndView getCart(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
         User user = userService.getUserById(authenticationMetadata.getUserId());
-
-        //TODO: check for potential errors
-//        List<CartItem> cartItems = cartService.getCartItems();
-
-        Cart cart = user.getCart();
-        if (user.getCart() == null){
-            cart = cartService.initCart(user);
-        }
-
+        Cart cart = cartService.getCartByUserId(user.getId());
         List<CartItem> cartItems = cart.getItems();
 
-        ModelAndView modelAndView = new ModelAndView();
-
         BigDecimal cartTotal = cartService.getCartTotal(cart);
+
+        ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("cartTotal", cartTotal);
-
         modelAndView.addObject("cartItems", cartItems);
-
         modelAndView.addObject("user", user);
-
         modelAndView.setViewName("cart");
 
         return modelAndView;
