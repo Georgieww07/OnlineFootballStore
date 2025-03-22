@@ -183,7 +183,6 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public String deleteProduct(@PathVariable UUID id){
         cartService.deleteCartItem(id);
-        orderService.deleteOrderItem(id);
         productService.deleteProduct(id);
 
         return "redirect:/products/admin";

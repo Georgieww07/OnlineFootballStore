@@ -40,4 +40,7 @@ public class Product {
 
     @Column(nullable = false)
     private boolean isInStock;
+
+    @Column(nullable = false)
+    private boolean deleted;
 }

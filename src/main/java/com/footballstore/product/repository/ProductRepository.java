@@ -19,4 +19,6 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
 
     List<Product> findByNameIgnoreCaseContaining(String name);
 
+    List<Product> findAllByDeletedFalse();
+
 }

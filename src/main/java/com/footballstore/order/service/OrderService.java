@@ -71,20 +71,5 @@ public class OrderService {
     public List<Order> getOrdersByUser(User user) {
         return orderRepository.findAllByUserId(user.getId());
     }
-
-    @Transactional
-    public void deleteOrderItem(UUID productId) {
-        List<OrderItem> orderItems = orderItemRepository.findByProductId(productId);
-
-        if (!orderItems.isEmpty()) {
-            orderItems.forEach(orderItem -> {
-                Order order = orderItem.getOrder();
-                order.getItems().remove(orderItem);
-
-                orderRepository.save(order);
-                orderItemRepository.delete(orderItem);
-            });
-        }
-    }
 }
 
