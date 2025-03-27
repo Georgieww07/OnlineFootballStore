@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -52,7 +53,7 @@ public class UserServiceUTest {
     }
 
     @Test
-    void givenValidUserIdAndFullPhoneNumberFromUserEditRequest_whenEditUserInfo_thenSuccessfullyUpdateUserInfo(){
+    void givenValidUserIdAndFullPhoneNumberFromUserEditRequest_whenEditUserInfo_thenSuccessfullyUpdateUserInfo() {
         //Given
         UUID userId = UUID.randomUUID();
 
@@ -83,7 +84,7 @@ public class UserServiceUTest {
     }
 
     @Test
-    void givenValidUserIdAndEmptyPhoneNumberFromUserEditRequest_whenEditUserInfo_thenSuccessfullyUpdateUserInfo(){
+    void givenValidUserIdAndEmptyPhoneNumberFromUserEditRequest_whenEditUserInfo_thenSuccessfullyUpdateUserInfo() {
         //Given
         UUID userId = UUID.randomUUID();
 
@@ -112,9 +113,8 @@ public class UserServiceUTest {
         verify(userRepository, times(1)).save(any(User.class));
     }
 
-
     @Test
-    void givenExistingUser_whenRegisterUser_thenEmailAlreadyExistExceptionIsThrown(){
+    void givenExistingUser_whenRegisterUser_thenEmailAlreadyExistExceptionIsThrown() {
         //Given
         RegisterRequest registerRequest = RegisterRequest.builder()
                 .email("123@gmail.com")
@@ -131,9 +131,8 @@ public class UserServiceUTest {
         verify(emailService, never()).sendEmail(anyString(), anyString(), anyString());
     }
 
-
     @Test
-    void givenHappyPath_whenRegisterUser(){
+    void givenHappyPath_whenRegisterUser() {
         //Given
         RegisterRequest registerRequest = RegisterRequest.builder()
                 .email("123@gmail.com")
@@ -158,9 +157,8 @@ public class UserServiceUTest {
         verify(emailService, times(1)).sendEmail(anyString(), anyString(), anyString());
     }
 
-
     @Test
-    void givenUserWithRoleAdmin_whenChangeRole_thenExpectRoleChangedToUser(){
+    void givenUserWithRoleAdmin_whenChangeRole_thenExpectRoleChangedToUser() {
         //Given
         UUID userId = UUID.randomUUID();
         User user = User.builder()
@@ -179,9 +177,8 @@ public class UserServiceUTest {
         verify(userRepository, times(1)).save(any(User.class));
     }
 
-
     @Test
-    void givenUserWithRoleUser_whenChangeRole_thenExpectRoleChangedToAdmin(){
+    void givenUserWithRoleUser_whenChangeRole_thenExpectRoleChangedToAdmin() {
         //Given
         UUID userId = UUID.randomUUID();
         User user = User.builder()
@@ -201,7 +198,7 @@ public class UserServiceUTest {
     }
 
     @Test
-    void givenValidUserId_whenDeleteUser_thenSuccessfullyDeleteUser(){
+    void givenValidUserId_whenDeleteUser_thenSuccessfullyDeleteUser() {
         //Given
         UUID userId = UUID.randomUUID();
 
@@ -213,23 +210,29 @@ public class UserServiceUTest {
     }
 
     @Test
-    void testGetAllUsers(){
+    void testGetAllUsers() {
         //Given
-        List<User> users = List.of(new User(), new User(), new User());
-        when(userRepository.findAll()).thenReturn(users);
+        LocalDateTime firstTestDate = LocalDateTime.of(2025, 3, 27, 16, 45);
+        LocalDateTime secondTestDate = LocalDateTime.of(2025, 3, 26, 16, 45);
+        List<User> users = List.of(
+                User.builder().createdOn(firstTestDate).build(),
+                User.builder().createdOn(secondTestDate).build()
+        );
+        when(userRepository.findAllByOrderByCreatedOnDesc()).thenReturn(users);
 
         //When
         List<User> allUsers = userService.getAllUsers();
 
-        //Then
-        assertEquals(users, allUsers);
-        assertEquals(users.size(), allUsers.size());
+        assertNotNull(allUsers);
+        assertEquals(2, allUsers.size());
+        assertEquals(firstTestDate, allUsers.get(0).getCreatedOn());
+        assertEquals(secondTestDate, allUsers.get(1).getCreatedOn());
 
-        verify(userRepository, times(1)).findAll();
+        verify(userRepository, times(1)).findAllByOrderByCreatedOnDesc();
     }
 
     @Test
-    void givenMissingUserFromDatabase_whenLoadByUsername_thenExceptionIsThrown(){
+    void givenMissingUserFromDatabase_whenLoadByUsername_thenExceptionIsThrown() {
         //Given
         String email = "123@gmail.com";
         when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
@@ -238,9 +241,8 @@ public class UserServiceUTest {
         assertThrows(DomainException.class, () -> userService.loadUserByUsername(email));
     }
 
-
     @Test
-    void givenExistingUser_whenLoadByUsername_thenReturnCorrectAuthenticationMetaData(){
+    void givenExistingUser_whenLoadByUsername_thenReturnCorrectAuthenticationMetaData() {
         //Given
         String email = "123@gmail.com";
         UUID userId = UUID.randomUUID();
@@ -264,5 +266,34 @@ public class UserServiceUTest {
         assertEquals(email, authenticationMetadata.getEmail());
         assertEquals("123123", authenticationMetadata.getPassword());
         assertEquals("ROLE_" + UserRole.USER, authenticationMetadata.getAuthorities().iterator().next().getAuthority());
+    }
+
+    @Test
+    void givenNoExistingAdminInDb_whenCreateAdminIfNotExist_thenSuccessfullyCreateAdmin() {
+        //Given
+        when(userRepository.findByEmail(any())).thenReturn(Optional.empty());
+
+        //When
+        userService.createAdminIfNotExist();
+
+        //Then
+        verify(userRepository, times(1)).save(argThat(user ->
+                user.getEmail().equals("onlinefootballstoreofficial@gmail.com") &&
+                        user.getRole() == UserRole.ADMIN &&
+                        user.getFirstName().equals("ADMIN") &&
+                        user.getLastName().equals("ADMIN")
+        ));
+    }
+
+    @Test
+    void givenExistingAdminInDb_whenCreateAdminIfNotExist_thenDoNotCreateNewAdmin() {
+        //Given
+        when(userRepository.findByEmail(any())).thenReturn(Optional.of(User.builder().build()));
+
+        //When
+        userService.createAdminIfNotExist();
+
+        //Then
+        verify(userRepository, never()).save(any(User.class));
     }
 }
