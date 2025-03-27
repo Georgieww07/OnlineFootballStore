@@ -69,7 +69,7 @@ public class ProductServiceUTest {
                 Product.builder().category(Category.BOOTS).build()
         );
 
-        when(productRepository.findAll()).thenReturn(products);
+        when(productRepository.findAllByDeletedFalse()).thenReturn(products);
 
         //When
         List<Product> allProducts = productService.getAllProducts();
@@ -80,7 +80,7 @@ public class ProductServiceUTest {
         assertEquals(Category.BALLS, allProducts.get(1).getCategory());
         assertEquals(Category.JERSEYS, allProducts.get(2).getCategory());
 
-        verify(productRepository, times(1)).findAll();
+        verify(productRepository, times(1)).findAllByDeletedFalse();
     }
 
     @Test
@@ -166,12 +166,15 @@ public class ProductServiceUTest {
     void givenValidProductId_whenDeleteProduct_thenSuccessfullyDeletedProduct() {
         //Given
         UUID productId = UUID.randomUUID();
+        Product product = Product.builder().id(productId).deleted(false).build();
+        when(productRepository.findById(productId)).thenReturn(Optional.of(product));
 
         //When
         productService.deleteProduct(productId);
 
         //Then
-        verify(productRepository, times(1)).deleteById(productId);
+        assertTrue(product.isDeleted());
+        verify(productRepository, times(1)).save(product);
     }
 
     @Test
@@ -236,23 +239,27 @@ public class ProductServiceUTest {
         verify(productRepository, times(1)).findByNameIgnoreCaseContaining(name);
     }
 
+    @Test
+    void givenNoProductsInDb_whenCreateAppProducts_thenSuccessfullyCreateProducts() {
+        //Given
+        when(productRepository.count()).thenReturn(0L);
 
+        //When
+        productService.createAppProducts();
 
+        //Then
+        verify(productRepository, times(1)).saveAll(anyList());
+    }
 
+    @Test
+    void givenExistingProductsInDb_whenCreateAppProducts_thenDoNotCreateNewOnes(){
+        //Given
+        when(productRepository.count()).thenReturn(18L);
 
+        //When
+        productService.createAppProducts();
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        //Then
+        verify(productRepository, never()).saveAll(anyList());
+    }
 }
