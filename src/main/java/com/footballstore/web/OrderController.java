@@ -47,17 +47,11 @@ public class OrderController {
     }
 
     @PostMapping
-    public ModelAndView placeOrder(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
-
-        ModelAndView modelAndView = new ModelAndView();
+    public String placeOrder(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
 
         User user = userService.getUserById(authenticationMetadata.getUserId());
-
-        modelAndView.addObject("user", user);
-
         orderService.placeOrder(user);
 
-        return new ModelAndView("redirect:/orders");
-
+        return "redirect:/orders";
     }
 }
