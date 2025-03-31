@@ -38,8 +38,9 @@ public class EmailService {
     }
 
     public List<Email> getEmails() {
-        ResponseEntity<List<Email>> httpResponse = emailClient.getAllEmails();
 
-        return Objects.requireNonNull(httpResponse.getBody()).stream().sorted((e1, e2) -> e2.getCreatedOn().compareTo(e1.getCreatedOn())).toList();
+        return Objects.requireNonNull(emailClient.getAllEmails().getBody())
+                .stream()
+                .toList();
     }
 }
