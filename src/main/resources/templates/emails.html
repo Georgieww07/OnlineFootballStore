@@ -155,13 +155,21 @@
                 <th>Receiver</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody th:unless="${#lists.isEmpty(emails)}">
             <tr th:each="email : ${emails}">
                 <td th:text="${email.subject}"></td>
                 <td th:if="${email.status == 'SUCCEEDED'}" th:text="${#strings.capitalize(#strings.toLowerCase(email.status))}" class="text-success"></td>
                 <td th:if="${email.status == 'FAILED'}" th:text="${#strings.capitalize(#strings.toLowerCase(email.status))}" class="text-danger"></td>
                 <td th:text="${#temporals.format(email.createdOn, 'dd MMM YYYY HH:mm')}"></td>
                 <td th:text="${email.receiver}"></td>
+            </tr>
+            </tbody>
+            <tbody th:if="${#lists.isEmpty(emails)}">
+            <tr>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
             </tr>
             </tbody>
         </table>
