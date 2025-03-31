@@ -1,5 +1,6 @@
 package com.footballstore.web;
 
+import com.footballstore.exception.EmailAlreadyExistException;
 import com.footballstore.product.service.ProductService;
 import com.footballstore.security.AuthenticationMetadata;
 import com.footballstore.user.model.UserRole;
@@ -124,6 +125,27 @@ public class IndexControllerApiTest {
                 .andExpect(model().attributeExists("errorMessage"));
 
         verify(userService, never()).registerUser(any());
+    }
+
+    @Test
+    void postRequestToRegisterEndpointWhenEmailAlreadyExist_shouldRedirectToRegisterWithFlashAttribute() throws Exception {
+
+        doThrow(new EmailAlreadyExistException("Email already exists"))
+                .when(userService)
+                .registerUser(any());
+
+        MockHttpServletRequestBuilder request = post("/register")
+                .formField("email", "asd@gmail.com")
+                .formField("password", "11111111a")
+                .formField("confirmPassword", "11111111a")
+                .with(csrf());
+
+        mockMvc.perform(request)
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/register"))
+                .andExpect(flash().attributeExists("emailAlreadyExistMessage"));
+
+        verify(userService, times(1)).registerUser(any());
     }
 
     @Test
