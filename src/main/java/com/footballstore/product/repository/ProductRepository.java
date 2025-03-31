@@ -12,12 +12,12 @@ import java.util.UUID;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, UUID> {
-    @Query("SELECT p FROM Product p WHERE p.isInStock = true ORDER BY FUNCTION('RAND')")
+    @Query("SELECT p FROM Product p WHERE p.isInStock = true and p.deleted = false ORDER BY FUNCTION('RAND')")
     List<Product> findRandomInStockProducts(Pageable pageable);
 
-    List<Product> findByCategory(Category category);
+    List<Product> findByCategoryAndDeletedFalse(Category category);
 
-    List<Product> findByNameIgnoreCaseContaining(String name);
+    List<Product> findByNameIgnoreCaseContainingAndDeletedFalse(String name);
 
     List<Product> findAllByDeletedFalse();
 
