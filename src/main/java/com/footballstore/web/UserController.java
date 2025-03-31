@@ -81,6 +81,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}/role")
+    @PreAuthorize("hasRole('ADMIN')")
     public String changeRole(@PathVariable UUID id){
 
         userService.changeRole(id);
@@ -89,6 +90,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String deleteUser(@PathVariable UUID id){
 
         userService.deleteUser(id);
