@@ -25,6 +25,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ProductServiceUTest {
+
     @Mock
     private ProductRepository productRepository;
 
@@ -187,7 +188,7 @@ public class ProductServiceUTest {
                 Product.builder().category(Category.BOOTS).build()
         );
 
-        when(productRepository.findByCategory(Category.valueOf(category))).thenReturn(products);
+        when(productRepository.findByCategoryAndDeletedFalse(Category.valueOf(category))).thenReturn(products);
 
         //When
         List<Product> productsByCategory = productService.getProductsByCategory(category);
@@ -199,7 +200,7 @@ public class ProductServiceUTest {
         assertEquals(Category.BOOTS, productsByCategory.get(1).getCategory());
         assertEquals(Category.BOOTS, productsByCategory.get(2).getCategory());
 
-        verify(productRepository, times(1)).findByCategory(Category.valueOf(category));
+        verify(productRepository, times(1)).findByCategoryAndDeletedFalse(Category.valueOf(category));
     }
 
     @Test
@@ -211,7 +212,7 @@ public class ProductServiceUTest {
                 Product.builder().name(name).build()
         );
 
-        when(productRepository.findByNameIgnoreCaseContaining(name)).thenReturn(products);
+        when(productRepository.findByNameIgnoreCaseContainingAndDeletedFalse(name)).thenReturn(products);
 
         //When
         List<Product> searchedProducts = productService.getSearchedProducts(name);
@@ -221,14 +222,14 @@ public class ProductServiceUTest {
         assertEquals(name, searchedProducts.get(0).getName());
         assertEquals(name, searchedProducts.get(1).getName());
 
-        verify(productRepository, times(1)).findByNameIgnoreCaseContaining(name);
+        verify(productRepository, times(1)).findByNameIgnoreCaseContainingAndDeletedFalse(name);
     }
 
     @Test
     void givenNotExistingProductName_whenGetSearchedProducts_thenReturnEmptyList() {
         //Given
         String name = "Amazing football boots";
-        when(productRepository.findByNameIgnoreCaseContaining(name)).thenReturn(List.of());
+        when(productRepository.findByNameIgnoreCaseContainingAndDeletedFalse(name)).thenReturn(List.of());
 
         //When
         List<Product> searchedProducts = productService.getSearchedProducts(name);
@@ -236,7 +237,7 @@ public class ProductServiceUTest {
         //Then
         assertTrue(searchedProducts.isEmpty());
 
-        verify(productRepository, times(1)).findByNameIgnoreCaseContaining(name);
+        verify(productRepository, times(1)).findByNameIgnoreCaseContainingAndDeletedFalse(name);
     }
 
     @Test
