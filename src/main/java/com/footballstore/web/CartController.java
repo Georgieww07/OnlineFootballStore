@@ -56,8 +56,9 @@ public class CartController {
     }
 
     @DeleteMapping("/{id}")
-    public String removeCartItem(@PathVariable UUID id) {
-        cartService.deleteCartItem(id);
+    public String removeCartItem(@PathVariable UUID id, @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+        User user = userService.getUserById(authenticationMetadata.getUserId());
+        cartService.deleteCartItem(id, user);
 
         return "redirect:/cart";
 

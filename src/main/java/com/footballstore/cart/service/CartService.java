@@ -75,10 +75,30 @@ public class CartService {
     }
 
     @Transactional
-    public void deleteCartItem(UUID productId) {
-        List<CartItem> cartItems = cartItemRepository.findByProductId(productId);
+    public void deleteCartItem(UUID productId, User user) {
 
+        List<CartItem> cartItems = cartItemRepository.findByProductId(productId);
         if (!cartItems.isEmpty()) {
+
+            List<CartItem> cartItemsByCurrentUser = cartItems.stream()
+                    .filter(cartItem -> cartItem.getCart().getId().equals(user.getCart().getId()))
+                    .toList();
+
+            Cart cart = user.getCart();
+            cart.getItems().removeAll(cartItemsByCurrentUser);
+            cart.setLastUpdated(LocalDateTime.now());
+
+            cartRepository.save(cart);
+            cartItemRepository.deleteAll(cartItemsByCurrentUser);
+        }
+    }
+
+    @Transactional
+    public void deleteCartItemFullyFromDb(UUID productId) {
+
+        List<CartItem> cartItems = cartItemRepository.findByProductId(productId);
+        if (!cartItems.isEmpty()) {
+
             cartItems.forEach(cartItem -> {
                 Cart cart = cartItem.getCart();
                 cart.getItems().remove(cartItem);
