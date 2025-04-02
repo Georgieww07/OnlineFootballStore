@@ -149,6 +149,26 @@ public class IndexControllerApiTest {
     }
 
     @Test
+    void postRequestToRegisterEndpoint_shouldThrowException() throws Exception {
+
+        doThrow(new RuntimeException("Error feign call"))
+                .when(userService)
+                .registerUser(any());
+
+        MockHttpServletRequestBuilder request = post("/register")
+                .formField("email", "asd@gmail.com")
+                .formField("password", "11111111a")
+                .formField("confirmPassword", "11111111a")
+                .with(csrf());
+
+        mockMvc.perform(request)
+                .andExpect(status().isInternalServerError())
+                .andExpect(view().name("internal-server-error"));
+
+        verify(userService, times(1)).registerUser(any());
+    }
+
+    @Test
     void getUnauthenticatedRequestToHomeEndpoint_shouldRedirectToLogin() throws Exception {
 
         MockHttpServletRequestBuilder request = get("/home");

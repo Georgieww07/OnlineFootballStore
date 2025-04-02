@@ -119,7 +119,7 @@ public class CartControllerApiTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("http://localhost/login"));
 
-        verify(cartService, never()).deleteCartItem(any());
+        verify(cartService, never()).deleteCartItem(any(), any());
     }
 
     @Test
@@ -135,6 +135,6 @@ public class CartControllerApiTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/cart"));
 
-        verify(cartService, times(1)).deleteCartItem(any());
+        verify(cartService, times(1)).deleteCartItem(any(), any());
     }
 }
