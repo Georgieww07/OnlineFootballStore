@@ -70,6 +70,7 @@ public class ProductController {
     }
 
     @GetMapping("/new")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView getCreateProductPage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
         ModelAndView modelAndView = new ModelAndView();
 
@@ -84,6 +85,7 @@ public class ProductController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView createProduct(@Valid ProductRequest productRequest, BindingResult bindingResult, @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
         if(bindingResult.hasErrors()){
             ModelAndView modelAndView = new ModelAndView();
@@ -119,6 +121,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}/info")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView getUpdateProductPage(@PathVariable UUID id, @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
 
         ModelAndView modelAndView = new ModelAndView();
@@ -138,6 +141,7 @@ public class ProductController {
     }
 
     @PutMapping("{id}/info")
+    @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView updateProduct(@PathVariable UUID id, @Valid ProductRequest productRequest, BindingResult bindingResult, @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
         if(bindingResult.hasErrors()){
             ModelAndView modelAndView = new ModelAndView();
@@ -178,6 +182,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String deleteProduct(@PathVariable UUID id) {
         cartService.deleteCartItemFullyFromDb(id);
         productService.deleteProduct(id);
