@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class CartCleanupScheduler {
+
     private final CartService cartService;
 
     @Autowired
@@ -17,7 +18,7 @@ public class CartCleanupScheduler {
     }
 
     @Scheduled(cron = "0 0 0 * * ?")
-//@Scheduled(cron = "0 * * * * ?") // Runs every minute for testing
+    //@Scheduled(cron = "0 * * * * ?") // Runs every minute for testing
     public void cleanUpAbandonedCarts() {
 
         log.info("Running cart cleanup task...");
