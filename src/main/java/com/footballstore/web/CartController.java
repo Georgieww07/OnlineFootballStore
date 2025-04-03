@@ -19,6 +19,7 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/cart")
 public class CartController {
+
     private final UserService userService;
     private final CartService cartService;
 
@@ -30,10 +31,10 @@ public class CartController {
 
     @GetMapping
     public ModelAndView getCart(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+
         User user = userService.getUserById(authenticationMetadata.getUserId());
         Cart cart = cartService.getCartByUserId(user.getId());
         List<CartItem> cartItems = cart.getItems();
-
         BigDecimal cartTotal = cartService.getCartTotal(cart);
 
         ModelAndView modelAndView = new ModelAndView();
@@ -49,7 +50,6 @@ public class CartController {
     public String addToCart(@RequestParam("productId") UUID productId, @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
 
         User user = userService.getUserById(authenticationMetadata.getUserId());
-
         cartService.addToCart(user.getId(), productId);
 
         return "redirect:/products";
@@ -57,11 +57,10 @@ public class CartController {
 
     @DeleteMapping("/{id}")
     public String removeCartItem(@PathVariable UUID id, @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+
         User user = userService.getUserById(authenticationMetadata.getUserId());
         cartService.deleteCartItem(id, user);
 
         return "redirect:/cart";
-
     }
-
 }
