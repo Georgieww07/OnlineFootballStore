@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <title>Manage Products - Football Store</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
@@ -150,17 +150,11 @@
                 <img th:src="${product.imageUrl}" class="card-img-top" alt="Product 1">
                 <div class="card-body">
                     <h5 th:text="${product.name}" class="card-title">Nike Football Boots</h5>
-                    <p th:text="${product.description}" class="card-text">High performance boots designed for
-                        champions.</p>
+                    <p th:text="${product.description}" class="card-text">High performance boots designed for champions.</p>
                     <p class="price"> <span th:text="${product.price}"></span>$</p>
-                    <!--                    <a href="" class="btn btn-outline-warning btn-action">Update</a>-->
-                    <!--                    <a href="" class="btn btn-danger btn-action">Delete</a>-->
                     <div class="d-flex justify-content-center gap-2">
                         <a th:href="@{'/products/' + ${product.id}}" class="btn btn-primary">View Product</a>
                         <a th:href="@{'/products/' + ${product.id} + '/info'}" class="btn btn-outline-warning btn-action mx-2">Update</a>
-<!--                        <form class="mx-2" th:action="@{'/products/' + ${product.id}}" th:method="PUT">-->
-<!--                            <button class="btn btn-outline-warning btn-action">Update</button>-->
-<!--                        </form>-->
                         <form th:action="@{'/products/' + ${product.id}}" th:method="DELETE">
                             <button class="btn btn-danger btn-action">Delete</button>
                         </form>
