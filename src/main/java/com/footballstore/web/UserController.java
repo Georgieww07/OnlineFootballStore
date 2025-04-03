@@ -21,6 +21,7 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/users")
 public class UserController {
+
     private final UserService userService;
 
     @Autowired
@@ -32,15 +33,12 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView getAllUsers(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
 
-        ModelAndView modelAndView = new ModelAndView();
-
         User user = userService.getUserById(authenticationMetadata.getUserId());
-        modelAndView.addObject("user", user);
-
         List<User> users = userService.getAllUsers();
 
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("user", user);
         modelAndView.addObject("users", users);
-
         modelAndView.setViewName("users");
 
         return modelAndView;
@@ -48,13 +46,12 @@ public class UserController {
 
     @GetMapping("/{id}/profile")
     public ModelAndView getUserProfilePage(@PathVariable UUID id){
+
         User user = userService.getUserById(id);
 
         ModelAndView modelAndView = new ModelAndView();
-
         modelAndView.addObject("user", user);
         modelAndView.addObject("userEditRequest", DtoMapper.fromUser(user));
-
         modelAndView.setViewName("profile");
 
         return modelAndView;
@@ -62,14 +59,13 @@ public class UserController {
 
     @PutMapping("/{id}/profile")
     public ModelAndView updateUserProfile(@PathVariable UUID id, @Valid UserEditRequest userEditRequest, BindingResult bindingResult){
+
         if(bindingResult.hasErrors()){
             User user = userService.getUserById(id);
 
             ModelAndView modelAndView = new ModelAndView();
-
             modelAndView.addObject("user", user);
             modelAndView.addObject("userEditRequest", userEditRequest);
-
             modelAndView.setViewName("profile");
 
             return modelAndView;
