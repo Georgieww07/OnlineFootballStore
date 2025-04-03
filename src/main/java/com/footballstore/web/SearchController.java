@@ -18,6 +18,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/search")
 public class SearchController {
+
     private final ProductService productService;
     private final UserService userService;
 
@@ -40,6 +41,5 @@ public class SearchController {
         modelAndView.setViewName("search-results");
 
         return modelAndView;
-
     }
 }
