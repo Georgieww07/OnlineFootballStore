@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <title>Football Store - Collection</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
@@ -184,11 +184,9 @@
                 <img th:src="${product.imageUrl}" class="card-img-top" alt="Product 1">
                 <div class="card-body">
                     <h5 th:text="${product.name}" class="card-title">Nike Football Boots</h5>
-                    <p th:text="${product.description}" class="card-text">High performance boots designed for
-                        champions.</p>
+                    <p th:text="${product.description}" class="card-text">High performance boots designed for champions.</p>
                     <p class="price"><span th:text="${product.price}"></span>$</p>
                     <a th:href="@{'/products/' + ${product.id}}" class="btn btn-primary">View Product</a>
-
                 </div>
             </div>
         </div>
