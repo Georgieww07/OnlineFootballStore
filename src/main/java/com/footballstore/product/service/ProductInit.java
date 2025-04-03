@@ -7,12 +7,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ProductInit implements ApplicationRunner {
+
     private final ProductService productService;
 
     @Autowired
     public ProductInit(ProductService productService) {
         this.productService = productService;
     }
+
 
     @Override
     public void run(ApplicationArguments args) {

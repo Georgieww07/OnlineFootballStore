@@ -21,6 +21,7 @@ import java.util.UUID;
 @Service
 @Slf4j
 public class ProductService {
+
     private final ProductRepository productRepository;
 
     @Autowired
@@ -28,7 +29,9 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
+
     public void createProduct(ProductRequest productRequest) {
+
         Product product = Product.builder()
                 .name(productRequest.getName())
                 .description(productRequest.getDescription())
@@ -44,6 +47,7 @@ public class ProductService {
     }
 
     public List<Product> getAllProducts() {
+
         List<Category> categoryOrder = List.of(Category.BOOTS, Category.BALLS, Category.JERSEYS);
 
         return productRepository.findAllByDeletedFalse().stream()
@@ -52,13 +56,13 @@ public class ProductService {
     }
 
     public List<Product> getFeaturedProducts() {
+
         Pageable limit = PageRequest.of(0, 3); // Fetch only 3 products
         return productRepository.findRandomInStockProducts(limit);
     }
 
-
-
     public void updateProduct(UUID productId, ProductRequest productRequest) {
+
         Product product = getProductById(productId);
 
         product.setName(productRequest.getName());
@@ -70,29 +74,34 @@ public class ProductService {
         product.setInStock(productRequest.isInStock());
 
         productRepository.save(product);
-
     }
 
     public void deleteProduct(UUID productId) {
+
         Product product = getProductById(productId);
         product.setDeleted(true);
         productRepository.save(product);
     }
 
     public Product getProductById(UUID productId) {
-        return productRepository.findById(productId).orElseThrow(() -> new DomainException("Product not found."));
+
+        return productRepository.findById(productId)
+                .orElseThrow(() -> new DomainException("Product not found."));
     }
 
     public List<Product> getProductsByCategory(String category) {
+
         return productRepository.findByCategoryAndDeletedFalse(Category.valueOf(category));
     }
 
     public List<Product> getSearchedProducts(String name) {
+
         return productRepository.findByNameIgnoreCaseContainingAndDeletedFalse(name);
     }
 
     @Transactional
     public void createAppProducts() {
+
         if(productRepository.count() == 0) {
             List<Product> products = List.of(
                     Product.builder().name("Adidas Predator Elite").description("Amazing football boots from Adidas").price(new BigDecimal("359.99")).category(Category.BOOTS).imageUrl("https://brand.assets.adidas.com/image/upload/f_auto,q_auto,fl_lossy/Predator_28f40307d9.jpg").brand(Brand.ADIDAS).isInStock(true).deleted(false).build(),
@@ -114,8 +123,8 @@ public class ProductService {
                     Product.builder().name("Nike AtleticoMadrid Jersey").description("Amazing jersey AtleticoMadrid").price(new BigDecimal("59.99")).category(Category.JERSEYS).imageUrl("https://cdn.shoplightspeed.com/shops/611228/files/59377341/nike-atletico-madrid-23-24-home-jersey-red-white.jpg").brand(Brand.NIKE).isInStock(true).deleted(false).build(),
                     Product.builder().name("Nike Chelsea Jersey").description("Amazing jersey Chelsea collection").price(new BigDecimal("89.99")).category(Category.JERSEYS).imageUrl("https://cdn.media.amplience.net/i/frasersdev/36744318_o.jpg?v=240827143238").brand(Brand.NIKE).isInStock(true).deleted(false).build()
             );
-            productRepository.saveAll(products);
 
+            productRepository.saveAll(products);
             log.info("Successfully created app products.");
         }
     }
