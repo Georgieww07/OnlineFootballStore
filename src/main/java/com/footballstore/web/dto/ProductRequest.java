@@ -15,9 +15,9 @@ import java.math.BigDecimal;
 
 @Data
 @Builder
-
 @AllArgsConstructor
 public class ProductRequest {
+
     @NotBlank(message = "Name is required.")
     private String name;
 

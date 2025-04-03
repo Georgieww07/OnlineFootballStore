@@ -1,6 +1,5 @@
 package com.footballstore.web.dto;
 
-import jakarta.validation.constraints.Null;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
