@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-import java.util.UUID;
 
 @Controller
 public class IndexController {
+
     private final UserService userService;
     private final ProductService productService;
 
@@ -32,15 +32,15 @@ public class IndexController {
 
     @GetMapping("/")
     public String getIndexPage(){
+
         return "index";
     }
 
     @GetMapping("/register")
     public ModelAndView getRegisterPage(){
+
         ModelAndView modelAndView = new ModelAndView();
-
         modelAndView.addObject("registerRequest", RegisterRequest.builder().build());
-
         modelAndView.setViewName("register");
 
         return modelAndView;
@@ -48,6 +48,7 @@ public class IndexController {
 
     @PostMapping("/register")
     public ModelAndView registerUser(@Valid RegisterRequest registerRequest, BindingResult bindingResult){
+
         if (bindingResult.hasErrors()){
             return new ModelAndView("register");
         }
@@ -58,6 +59,7 @@ public class IndexController {
             modelAndView.addObject("errorMessage", "Passwords do not match!");
             return modelAndView;
         }
+
         userService.registerUser(registerRequest);
 
         return new ModelAndView("redirect:/login");
@@ -65,27 +67,26 @@ public class IndexController {
 
     @GetMapping("/login")
     public ModelAndView getLoginPage(@RequestParam(value = "error", required = false) String errorParam){
-        ModelAndView modelAndView = new ModelAndView();
 
+        ModelAndView modelAndView = new ModelAndView();
         if (errorParam != null){
             modelAndView.addObject("errorMessage", "Invalid username or password!");
         }
 
         modelAndView.setViewName("login");
+
         return modelAndView;
     }
 
     @GetMapping("/home")
     public ModelAndView getHomePage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata){
-        User user = userService.getUserById(authenticationMetadata.getUserId());
 
+        User user = userService.getUserById(authenticationMetadata.getUserId());
         List<Product> featuredProducts = productService.getFeaturedProducts();
 
         ModelAndView modelAndView = new ModelAndView();
-
         modelAndView.addObject("user", user);
         modelAndView.addObject("featuredProducts", featuredProducts);
-
         modelAndView.setViewName("home");
 
         return modelAndView;
