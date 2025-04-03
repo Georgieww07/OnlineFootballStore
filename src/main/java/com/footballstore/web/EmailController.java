@@ -18,6 +18,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/emails")
 public class EmailController {
+
     private final EmailService emailService;
     private final UserService userService;
 
