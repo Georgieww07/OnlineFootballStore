@@ -18,6 +18,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/orders")
 public class OrderController {
+
     private final UserService userService;
     private final OrderService orderService;
 
@@ -30,15 +31,12 @@ public class OrderController {
     @GetMapping
     public ModelAndView getOrdersPage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
 
-        ModelAndView modelAndView = new ModelAndView();
-
         User user = userService.getUserById(authenticationMetadata.getUserId());
-        modelAndView.addObject("user", user);
-
         List<Order> orders = orderService.getOrdersByUser(user);
 
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("user", user);
         modelAndView.addObject("orders", orders);
-
         modelAndView.setViewName("orders");
 
         return modelAndView;
