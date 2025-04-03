@@ -24,6 +24,7 @@ import java.util.UUID;
 @Slf4j
 @Service
 public class CartService {
+
     private final UserService userService;
     private final ProductService productService;
     private final CartItemRepository cartItemRepository;
@@ -40,16 +41,14 @@ public class CartService {
 
     @Transactional
     public void addToCart(UUID userId, UUID productId) {
-        User user = userService.getUserById(userId);
 
+        User user = userService.getUserById(userId);
         if (user.getCart() == null) {
             Cart cart = initCart(user);
-
             user.setCart(cart);
         }
 
         Cart cart = user.getCart();
-
         Product product = productService.getProductById(productId);
 
         Optional<CartItem> existingItem = cart.getItems().stream()
@@ -58,7 +57,7 @@ public class CartService {
 
         if (existingItem.isPresent()) {
             CartItem item = existingItem.get();
-            item.setQuantity(item.getQuantity() + 1);  // Update the quantity
+            item.setQuantity(item.getQuantity() + 1);
             cartItemRepository.save(item);
         } else {
             CartItem cartItem = CartItem.builder()
@@ -66,6 +65,7 @@ public class CartService {
                     .product(product)
                     .quantity(1)
                     .build();
+
             cartItemRepository.save(cartItem);
             cart.getItems().add(cartItem);
         }
@@ -111,12 +111,14 @@ public class CartService {
     }
 
     public BigDecimal getCartTotal(Cart cart) {
+
         return cart.getItems().stream()
                 .map(item -> item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public Cart initCart(User user){
+
         Cart cart = Cart.builder()
                 .user(user)
                 .items(new ArrayList<>())
@@ -127,18 +129,19 @@ public class CartService {
     }
 
     public Cart getCartByUserId(UUID userId) {
+
         Optional<Cart> cart = cartRepository.findByUserId(userId);
         return cart.orElseGet(() -> initCart(userService.getUserById(userId)));
-
     }
 
     @Transactional
     public void clearCart(UUID cartId) {
-        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new DomainException("Cart with cart id [%s] not found!".formatted(cartId)));
+
+        Cart cart = cartRepository.findById(cartId)
+                .orElseThrow(() -> new DomainException("Cart with cart id [%s] not found!".formatted(cartId)));
 
         cartItemRepository.deleteAll(cart.getItems());
         cart.getItems().clear();
-
         cart.setLastUpdated(LocalDateTime.now());
 
         cartRepository.save(cart);
@@ -150,7 +153,6 @@ public class CartService {
         LocalDateTime expirationTime = LocalDateTime.now().minusDays(7);
 
         List<Cart> oldCarts = cartRepository.findByLastUpdatedBefore(expirationTime);
-
         oldCarts.forEach(cart -> clearCart(cart.getId()));
 
         log.info("[%d] abandoned carts cleared.".formatted(oldCarts.size()));
