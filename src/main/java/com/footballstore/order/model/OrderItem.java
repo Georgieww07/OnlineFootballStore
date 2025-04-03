@@ -14,6 +14,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "order_items")
 public class OrderItem {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -26,5 +27,4 @@ public class OrderItem {
 
     @Column(nullable = false)
     private int quantity;
-
 }

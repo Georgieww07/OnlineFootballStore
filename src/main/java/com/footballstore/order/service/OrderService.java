@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
+
     private final OrderRepository orderRepository;
     private final CartService cartService;
     private final OrderItemRepository orderItemRepository;
@@ -29,8 +30,10 @@ public class OrderService {
         this.orderItemRepository = orderItemRepository;
     }
 
+
     @Transactional
     public void placeOrder(User user) {
+
         Cart cart = cartService.getCartByUserId(user.getId());
         if (cart.getItems().isEmpty()) {
             throw new IllegalStateException("Cart is empty! Cannot place order.");
@@ -53,22 +56,20 @@ public class OrderService {
 
         order.setItems(orderItems);
         order.setTotalPrice(calculateTotalPrice(order));
-
         orderRepository.save(order);
 
         cartService.clearCart(cart.getId());
-
-
     }
 
     private BigDecimal calculateTotalPrice(Order order) {
+
         return order.getItems().stream()
                 .map(item -> item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public List<Order> getOrdersByUser(User user) {
+
         return orderRepository.findAllByUserIdOrderByCreatedOnDesc(user.getId());
     }
 }
-
