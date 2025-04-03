@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserInit implements ApplicationRunner {
+
     private final UserService userService;
 
     @Autowired

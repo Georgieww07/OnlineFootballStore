@@ -25,6 +25,7 @@ import java.util.UUID;
 @Service
 @Slf4j
 public class UserService implements UserDetailsService {
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
@@ -36,9 +37,10 @@ public class UserService implements UserDetailsService {
         this.emailService = emailService;
     }
 
-    public void registerUser(RegisterRequest registerRequest) {
-        Optional<User> optionalUser = userRepository.findByEmail(registerRequest.getEmail());
 
+    public void registerUser(RegisterRequest registerRequest) {
+
+        Optional<User> optionalUser = userRepository.findByEmail(registerRequest.getEmail());
         if (optionalUser.isPresent()) {
             throw new EmailAlreadyExistException("User with email [%s] already exists!".formatted(registerRequest.getEmail()));
         }
@@ -59,10 +61,11 @@ public class UserService implements UserDetailsService {
     }
 
     public void editUserInfo(UUID userId, UserEditRequest userEditRequest) {
-        User user = getUserById(userId);
 
+        User user = getUserById(userId);
         user.setFirstName(userEditRequest.getFirstName());
         user.setLastName(userEditRequest.getLastName());
+
         if (!userEditRequest.getPhoneNumber().isEmpty()) {
             user.setPhoneNumber("+359" + userEditRequest.getPhoneNumber());
         } else {
@@ -75,16 +78,19 @@ public class UserService implements UserDetailsService {
     }
 
     public List<User> getAllUsers() {
+
         return userRepository.findAllByOrderByCreatedOnDesc();
     }
 
     public User getUserById(UUID userId) {
-        return userRepository.findById(userId).orElseThrow(() -> new DomainException("User not found!"));
+
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new DomainException("User not found!"));
     }
 
     public void changeRole(UUID userId) {
-        User user = getUserById(userId);
 
+        User user = getUserById(userId);
         if (user.getRole() == UserRole.USER) {
             user.setRole(UserRole.ADMIN);
         } else {
@@ -95,6 +101,7 @@ public class UserService implements UserDetailsService {
     }
 
     public void deleteUser(UUID userId) {
+
         userRepository.deleteById(userId);
     }
 
@@ -108,6 +115,7 @@ public class UserService implements UserDetailsService {
     }
 
     public void createAdminIfNotExist(){
+
         Optional<User> optionalUser = userRepository.findByEmail("onlinefootballstoreofficial@gmail.com");
 
         if (optionalUser.isEmpty()) {
