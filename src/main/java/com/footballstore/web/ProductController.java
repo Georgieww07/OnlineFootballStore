@@ -23,6 +23,7 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/products")
 public class ProductController {
+
     private final ProductService productService;
     private final UserService userService;
     private final CartService cartService;
@@ -36,34 +37,28 @@ public class ProductController {
 
     @GetMapping
     public ModelAndView getProductsPage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
-        ModelAndView modelAndView = new ModelAndView();
 
         User user = userService.getUserById(authenticationMetadata.getUserId());
-        modelAndView.addObject("user", user);
-
         List<Product> products = productService.getAllProducts();
 
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("user", user);
         modelAndView.addObject("products", products);
-
-
         modelAndView.setViewName("products");
 
         return modelAndView;
-
     }
 
     @GetMapping("/admin")
     @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView getProductsAdminPage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
-        ModelAndView modelAndView = new ModelAndView();
 
         User user = userService.getUserById(authenticationMetadata.getUserId());
-        modelAndView.addObject("user", user);
-
         List<Product> products = productService.getAllProducts();
 
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("user", user);
         modelAndView.addObject("products", products);
-
         modelAndView.setViewName("products-admin");
 
         return modelAndView;
@@ -72,13 +67,12 @@ public class ProductController {
     @GetMapping("/new")
     @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView getCreateProductPage(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
-        ModelAndView modelAndView = new ModelAndView();
 
         User user = userService.getUserById(authenticationMetadata.getUserId());
+
+        ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("user", user);
-
         modelAndView.addObject("productRequest", ProductRequest.builder().build());
-
         modelAndView.setViewName("product-new");
 
         return modelAndView;
@@ -87,12 +81,12 @@ public class ProductController {
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView createProduct(@Valid ProductRequest productRequest, BindingResult bindingResult, @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+
         if(bindingResult.hasErrors()){
-            ModelAndView modelAndView = new ModelAndView();
-
             User user = userService.getUserById(authenticationMetadata.getUserId());
-            modelAndView.addObject("user", user);
 
+            ModelAndView modelAndView = new ModelAndView();
+            modelAndView.addObject("user", user);
             modelAndView.setViewName("product-new");
 
             return modelAndView;
@@ -101,59 +95,50 @@ public class ProductController {
         productService.createProduct(productRequest);
 
         return new ModelAndView("redirect:/products/admin");
-
     }
 
     @GetMapping("/{id}")
     public ModelAndView getProductPage(@PathVariable UUID id, @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
-        ModelAndView modelAndView = new ModelAndView();
 
         User user = userService.getUserById(authenticationMetadata.getUserId());
-        modelAndView.addObject("user", user);
-
         Product product = productService.getProductById(id);
-        modelAndView.addObject("product", product);
 
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("user", user);
+        modelAndView.addObject("product", product);
         modelAndView.setViewName("product");
 
         return modelAndView;
-
     }
 
     @GetMapping("/{id}/info")
     @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView getUpdateProductPage(@PathVariable UUID id, @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
 
-        ModelAndView modelAndView = new ModelAndView();
-
+        User user = userService.getUserById(authenticationMetadata.getUserId());
         Product product = productService.getProductById(id);
 
-        User user = userService.getUserById(authenticationMetadata.getUserId());
+        ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("user", user);
-
         modelAndView.addObject("product", product);
         modelAndView.addObject("productRequest", DtoMapper.fromProduct(product));
-
         modelAndView.setViewName("product-update");
 
         return modelAndView;
-
     }
 
     @PutMapping("{id}/info")
     @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView updateProduct(@PathVariable UUID id, @Valid ProductRequest productRequest, BindingResult bindingResult, @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
-        if(bindingResult.hasErrors()){
-            ModelAndView modelAndView = new ModelAndView();
 
+        if(bindingResult.hasErrors()){
+            User user = userService.getUserById(authenticationMetadata.getUserId());
             Product product = productService.getProductById(id);
 
-            User user = userService.getUserById(authenticationMetadata.getUserId());
+            ModelAndView modelAndView = new ModelAndView();
             modelAndView.addObject("user", user);
-
             modelAndView.addObject("product", product);
             modelAndView.addObject("productRequest", productRequest);
-
             modelAndView.setViewName("product-update");
 
             return modelAndView;
@@ -166,16 +151,14 @@ public class ProductController {
 
     @GetMapping("/browse")
     public ModelAndView getProductsByCategory(@RequestParam(name = "category") String category, @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
-        ModelAndView modelAndView = new ModelAndView();
 
         User user = userService.getUserById(authenticationMetadata.getUserId());
-        modelAndView.addObject("user", user);
-
         List<Product> productsByCategory = productService.getProductsByCategory(category);
 
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("user", user);
         modelAndView.addObject("productsByCategory", productsByCategory);
         modelAndView.addObject("category", category);
-
         modelAndView.setViewName("browse-category");
 
         return modelAndView;
@@ -184,11 +167,10 @@ public class ProductController {
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public String deleteProduct(@PathVariable UUID id) {
+
         cartService.deleteCartItemFullyFromDb(id);
         productService.deleteProduct(id);
 
         return "redirect:/products/admin";
-
     }
-
 }
