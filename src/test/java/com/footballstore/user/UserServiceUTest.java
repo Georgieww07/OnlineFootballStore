@@ -28,6 +28,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceUTest {
+
     @Mock
     private UserRepository userRepository;
     @Mock
@@ -218,6 +219,7 @@ public class UserServiceUTest {
                 User.builder().createdOn(firstTestDate).build(),
                 User.builder().createdOn(secondTestDate).build()
         );
+
         when(userRepository.findAllByOrderByCreatedOnDesc()).thenReturn(users);
 
         //When
